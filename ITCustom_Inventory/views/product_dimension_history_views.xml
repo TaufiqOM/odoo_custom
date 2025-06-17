@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_dimension_history_tree" model="ir.ui.view">
+        <field name="name">product.dimension.history.tree</field>
+        <field name="model">product.dimension.history</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="field_name"/>
+                <field name="old_value"/>
+                <field name="new_value"/>
+                <field name="change_date"/>
+            </list>
+        </field>
+    </record>
+</odoo>
