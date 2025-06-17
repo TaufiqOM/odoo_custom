@@ -7,16 +7,23 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[@name='sales']" position="inside">
                 <group string="Additional Sale Images">
+                    <button name="action_upload_from_documents" type="object" string="Upload From Documents" class="oe_highlight"/>
                     <field name="sale_image_ids" widget="many2many_kanban">
                         <kanban>
                             <field name="id"/>
                             <field name="name"/>
-                            <field name="datas"/> <!-- Assuming 'datas' is the field storing the binary image data -->
+                            <field name="datas"/>
+                            <field name="mimetype"/>
                             <templates>
                                 <t t-name="kanban-box">
                                     <div class="oe_kanban_card oe_kanban_global_click">
                                         <div class="oe_kanban_image">
-                                            <img t-att-src="kanban_image('ir.attachment', 'datas', record.id.raw_value)" style="max-width: 240px; max-height: 240px; object-fit: cover;"/>
+                                            <t t-if="record.mimetype.raw_value and record.mimetype.raw_value.includes('image')">
+                                                <img t-att-src="kanban_image('ir.attachment', 'datas', record.id.raw_value)" style="max-width: 240px; max-height: 240px; object-fit: cover;"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span>Non-image file</span>
+                                            </t>
                                         </div>
                                         <div class="oe_kanban_details">
                                             <strong><field name="name"/></strong>
