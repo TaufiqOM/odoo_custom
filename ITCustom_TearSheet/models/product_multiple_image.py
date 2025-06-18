@@ -34,6 +34,36 @@ class ProductTemplate(models.Model):
                 filtered_attachments = product.sale_image_ids.filtered(lambda att: att.name in filenames)
                 product.filtered_sale_image_ids = filtered_attachments
 
+    def _sync_sale_image_ids_with_filenames(self):
+        for product in self:
+            if not product.image_filenames:
+                product.sale_image_ids = [(5, 0, 0)]
+            else:
+                filenames = [name.strip() for name in product.image_filenames.split(',') if name.strip()]
+                # Search attachments linked to documents.document with matching names
+                document_attachments = self.env['ir.attachment'].search([
+                    ('name', 'in', filenames),
+                    ('res_model', '=', 'documents.document'),
+                ])
+                # Link these attachments to product by updating res_model and res_id
+                document_attachments.write({'res_model': 'product.template', 'res_id': product.id})
+                # Merge existing sale_image_ids with found attachments
+                existing_ids = product.sale_image_ids.ids
+                new_ids = list(set(existing_ids + document_attachments.ids))
+                product.sale_image_ids = [(6, 0, new_ids)]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(ProductTemplate, self).create(vals_list)
+        records._sync_sale_image_ids_with_filenames()
+        return records
+
+    def write(self, vals):
+        res = super(ProductTemplate, self).write(vals)
+        if 'image_filenames' in vals:
+            self._sync_sale_image_ids_with_filenames()
+        return res
+
     def action_upload_from_documents(self):
         self.ensure_one()
         return {
@@ -72,14 +102,35 @@ class ProductTemplate(models.Model):
                 filenames.remove(attachment.name)
                 self.image_filenames = ','.join(filenames)
 
+    def remove_image_with_attachment_for_product(self, attachment, product):
+        product.ensure_one()
+        if attachment in product.sale_image_ids:
+            product.sale_image_ids = [(3, attachment.id)]
+        if product.image_filenames:
+            filenames = [name.strip() for name in product.image_filenames.split(',') if name.strip()]
+            if attachment.name in filenames:
+                filenames.remove(attachment.name)
+                product.write({'image_filenames': ','.join(filenames)})
+
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
     def remove_image(self):
+        import logging
+        _logger = logging.getLogger(__name__)
+        product_id = self.env.context.get('product_id')
+        _logger.info(f"remove_image called with product_id: {product_id}")
         for attachment in self:
-            products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)])
-            for product in products:
-                product.remove_image_with_attachment(attachment)
+            if product_id:
+                product = self.env['product.template'].browse(product_id)
+                _logger.info(f"Removing attachment {attachment.id} from product {product.id}")
+                if product and attachment in product.sale_image_ids:
+                    product.remove_image_with_attachment_for_product(attachment, product)
+            else:
+                products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)])
+                for product in products:
+                    product.remove_image_with_attachment(attachment)
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
 
 class ProductDocumentsSelectionWizard(models.TransientModel):
     _name = 'product.documents.selection.wizard'
