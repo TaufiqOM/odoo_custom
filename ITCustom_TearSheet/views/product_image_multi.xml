@@ -6,9 +6,9 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[@name='sales']" position="inside">
-                <group string="Additional Sale Images">
+                <group position="replace">
                     <button name="action_upload_from_documents" type="object" string="Upload From Documents" class="oe_highlight"/>
-                    <field name="sale_image_ids" widget="many2many_kanban">
+                    <field name="filtered_sale_image_ids" widget="many2many_kanban" style="position: relative;">
                         <kanban>
                             <field name="id"/>
                             <field name="name"/>
@@ -16,17 +16,24 @@
                             <field name="mimetype"/>
                             <templates>
                                 <t t-name="kanban-box">
-                                    <div class="oe_kanban_card oe_kanban_global_click">
-                                        <div class="oe_kanban_image">
+                                    <div class="oe_kanban_card oe_kanban_global_click" style="position: relative;">
+                                        <div class="oe_kanban_image" style="position: relative;">
                                             <t t-if="record.mimetype.raw_value and record.mimetype.raw_value.includes('image')">
                                                 <img t-att-src="kanban_image('ir.attachment', 'datas', record.id.raw_value)" style="max-width: 240px; max-height: 240px; object-fit: cover;"/>
                                             </t>
                                             <t t-else="">
                                                 <span>Non-image file</span>
                                             </t>
+                                            <div style="position: absolute; top: 5px; right: 5px; z-index: 10;">
+                                                <button type="object" name="remove_image" class="btn btn-danger btn-sm o_kanban_button_delete" string="Hapus Gambar" t-att-context="{'attachment_id': record.id.raw_value}" style="padding: 0 6px; font-size: 16px; line-height: 1;">
+                                                    &#215;
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="oe_kanban_details">
-                                            <strong><field name="name"/></strong>
+                                            <strong>
+                                                <field name="name"/>
+                                            </strong>
                                         </div>
                                     </div>
                                 </t>
