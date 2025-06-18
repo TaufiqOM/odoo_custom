@@ -27,7 +27,8 @@ class ProductTemplate(models.Model):
     def _compute_filtered_sale_image_ids(self):
         for product in self:
             if not product.image_filenames:
-                product.filtered_sale_image_ids = product.sale_image_ids
+                # If image_filenames is empty or null, set filtered_sale_image_ids to empty
+                product.filtered_sale_image_ids = self.env['ir.attachment']
             else:
                 filenames = [name.strip() for name in product.image_filenames.split(',') if name.strip()]
                 filtered_attachments = product.sale_image_ids.filtered(lambda att: att.name in filenames)
@@ -58,6 +59,9 @@ class ProductTemplate(models.Model):
             if attachment.name in filenames:
                 filenames.remove(attachment.name)
                 self.image_filenames = ','.join(filenames)
+        # Force recompute of filtered_sale_image_ids
+        self.invalidate_cache(fnames=['filtered_sale_image_ids'])
+        self._compute_filtered_sale_image_ids()
 
     def remove_image_with_attachment(self, attachment):
         if attachment in self.sale_image_ids:
