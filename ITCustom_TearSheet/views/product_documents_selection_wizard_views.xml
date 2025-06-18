@@ -5,14 +5,15 @@
         <field name="model">product.documents.selection.wizard</field>
         <field name="arch" type="xml">
             <form string="Select Documents from Products Folder">
-                <group>
-                    <field name="product_id" readonly="1"/>
-                    <field name="document_ids" widget="many2many_tags" options="{'no_create': True, 'no_edit': True}"/>
-                </group>
-                <footer>
-                    <button string="Link Documents" type="object" name="action_link_documents" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
-                </footer>
+                <sheet>
+                    <group>
+                        <field name="document_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button string="Link Documents" type="object" name="action_link_documents" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
             </form>
         </field>
     </record>

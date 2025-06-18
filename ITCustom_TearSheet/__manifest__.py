@@ -8,9 +8,9 @@
     'category': 'Inventory',
     'depends': ['product', 'documents'],
     'data': [
+        'views/product_documents_selection_wizard_views.xml',
         'views/product_template_tear_sheet_views.xml',
         'views/product_image_multi.xml',
-        'views/product_documents_selection_wizard_views.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,
