@@ -130,7 +130,7 @@ class IrAttachment(models.Model):
                 products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)])
                 for product in products:
                     product.remove_image_with_attachment(attachment)
-        return {'type': 'ir.actions.client', 'tag': 'reload'}
+        return {}
 
 class ProductDocumentsSelectionWizard(models.TransientModel):
     _name = 'product.documents.selection.wizard'
