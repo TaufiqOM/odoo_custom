@@ -21,6 +21,26 @@ class ProductTemplate(models.Model):
         compute='_compute_filtered_sale_image_ids',
         store=False,
     )
+    
+    main_image_filename = fields.Char(string="Main Image Filename")
+
+    def action_batch_update_images(self):
+        for product in self:
+            if product.main_image_filename:
+                filename = product.main_image_filename.strip()
+                doc = self.env['documents.document'].search([
+                    ('name', '=', filename),
+                    ('folder_id.name', '=', 'Products'),
+                    ('attachment_id.datas', '!=', False)
+                ], limit=1)
+
+                if doc and doc.attachment_id:
+                    product.image_1920 = doc.attachment_id.datas
+                else:
+                    product.image_1920 = False
+
+
+
 
     @api.depends('sale_image_ids', 'image_filenames')
     def _compute_filtered_sale_image_ids(self):
