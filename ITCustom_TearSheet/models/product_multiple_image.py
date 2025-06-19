@@ -7,7 +7,6 @@ class ProductTemplate(models.Model):
     sale_image_ids = fields.Many2many(
         'ir.attachment',
         string='Sale Images',
-        domain="[('res_model', '=', 'product.template'), ('res_id', '=', id)]",
         help="Additional images to be displayed in Sales tab"
     )
 
@@ -45,8 +44,8 @@ class ProductTemplate(models.Model):
                     ('name', 'in', filenames),
                     ('res_model', '=', 'documents.document'),
                 ])
-                # Link these attachments to product by updating res_model and res_id
-                document_attachments.write({'res_model': 'product.template', 'res_id': product.id})
+                # Do not update res_model and res_id to allow multiple product links
+                # document_attachments.write({'res_model': 'product.template', 'res_id': product.id})
                 # Merge existing sale_image_ids with found attachments
                 existing_ids = product.sale_image_ids.ids
                 new_ids = list(set(existing_ids + document_attachments.ids))
@@ -111,9 +110,24 @@ class ProductTemplate(models.Model):
             if attachment.name in filenames:
                 filenames.remove(attachment.name)
                 product.write({'image_filenames': ','.join(filenames)})
+        product.invalidate_cache(fnames=['filtered_sale_image_ids'])
+        product._compute_filtered_sale_image_ids()
 
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
+
+    product_id = fields.Many2one(
+        'product.template',
+        string='Product',
+        compute='_compute_product_id',
+        store=False,
+        help='Product linked to this attachment if any',
+    )
+
+    def _compute_product_id(self):
+        for attachment in self:
+            products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)], limit=1)
+            attachment.product_id = products.id if products else False
 
     def remove_image(self):
         import logging
@@ -125,7 +139,16 @@ class IrAttachment(models.Model):
                 product = self.env['product.template'].browse(product_id)
                 _logger.info(f"Removing attachment {attachment.id} from product {product.id}")
                 if product and attachment in product.sale_image_ids:
-                    product.remove_image_with_attachment_for_product(attachment, product)
+                    # Remove attachment from product's sale_image_ids
+                    product.sale_image_ids = [(3, attachment.id)]
+                    # Update image_filenames only for this product
+                    if product.image_filenames:
+                        filenames = [name.strip() for name in product.image_filenames.split(',') if name.strip()]
+                        if attachment.name in filenames:
+                            filenames.remove(attachment.name)
+                            product.image_filenames = ','.join(filenames)
+                    product.invalidate_cache(fnames=['filtered_sale_image_ids'])
+                    product._compute_filtered_sale_image_ids()
             else:
                 products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)])
                 for product in products:
