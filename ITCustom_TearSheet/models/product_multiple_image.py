@@ -185,15 +185,30 @@ class ProductDocumentsSelectionWizard(models.TransientModel):
         string='Documents',
         domain="[('folder_id.name', '=', 'Products')]"
     )
+    upload_file = fields.Binary(string="Upload Image")
+    upload_filename = fields.Char(string="Upload Filename")
 
     def action_link_documents(self):
         self.ensure_one()
-        if not self.document_ids:
-            raise UserError("Please select at least one document.")
-        attachments = self.document_ids.mapped('attachment_id')  # Changed to 'attachment_id' (singular) as per Odoo documents module
+        attachments = []
+        # Handle uploaded file if present
+        if self.upload_file and self.upload_filename:
+            # Save uploaded file as attachment without linking to documents.folder
+            attachment_vals = {
+                'name': self.upload_filename,
+                'datas': self.upload_file,
+                'res_model': 'product.template',
+                'res_id': self.product_id.id,
+                'mimetype': 'image/png',  # Could be improved to detect mimetype
+            }
+            attachment = self.env['ir.attachment'].create(attachment_vals)
+            attachments.append(attachment)
+        # Handle selected documents
+        if self.document_ids:
+            attachments += self.document_ids.mapped('attachment_id')
         if not attachments:
-            raise UserError("No attachments found in the selected documents.")
-        # Link selected documents' attachments to product's sale_image_ids
+            raise UserError("Please select or upload at least one image.")
+        # Link attachments to product's sale_image_ids
         existing_attachments = self.product_id.sale_image_ids
         new_attachment_ids = [att.id for att in attachments if att not in existing_attachments]
         if new_attachment_ids:
