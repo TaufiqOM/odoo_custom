@@ -109,7 +109,7 @@ class ProductTemplate(models.Model):
                 filenames.remove(attachment.name)
                 self.image_filenames = ','.join(filenames)
         # Force recompute of filtered_sale_image_ids
-        self.invalidate_cache(fnames=['filtered_sale_image_ids'])
+        self.env.cache.invalidate([('filtered_sale_image_ids', self.ids)])
         self._compute_filtered_sale_image_ids()
 
     def remove_image_with_attachment(self, attachment):
@@ -130,7 +130,7 @@ class ProductTemplate(models.Model):
             if attachment.name in filenames:
                 filenames.remove(attachment.name)
                 product.write({'image_filenames': ','.join(filenames)})
-        product.invalidate_cache(fnames=['filtered_sale_image_ids'])
+        product.env.cache.invalidate([('filtered_sale_image_ids', product.ids)])
         product._compute_filtered_sale_image_ids()
 
 class IrAttachment(models.Model):
@@ -167,7 +167,7 @@ class IrAttachment(models.Model):
                         if attachment.name in filenames:
                             filenames.remove(attachment.name)
                             product.image_filenames = ','.join(filenames)
-                    product.invalidate_cache(fnames=['filtered_sale_image_ids'])
+                    product.env.cache.invalidate([('filtered_sale_image_ids', product.ids)])
                     product._compute_filtered_sale_image_ids()
             else:
                 products = self.env['product.template'].search([('sale_image_ids', 'in', attachment.id)])
