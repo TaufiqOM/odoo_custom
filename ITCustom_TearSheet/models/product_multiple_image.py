@@ -193,15 +193,23 @@ class ProductDocumentsSelectionWizard(models.TransientModel):
         attachments = []
         # Handle uploaded file if present
         if self.upload_file and self.upload_filename:
-            # Save uploaded file as attachment without linking to documents.folder
+            # Save uploaded file as attachment and create documents.document linked to Products folder
+            documents_folder = self.env['documents.document'].search([('folder_id.name', '=', 'Products')], limit=1)
+            folder_id = documents_folder.folder_id.id if documents_folder else False
             attachment_vals = {
                 'name': self.upload_filename,
                 'datas': self.upload_file,
-                'res_model': 'product.template',
-                'res_id': self.product_id.id,
+                'res_model': 'documents.document',
+                'res_id': 0,
                 'mimetype': 'image/png',  # Could be improved to detect mimetype
             }
             attachment = self.env['ir.attachment'].create(attachment_vals)
+            document_vals = {
+                'name': self.upload_filename,
+                'folder_id': folder_id,
+                'attachment_id': attachment.id,
+            }
+            document = self.env['documents.document'].create(document_vals)
             attachments.append(attachment)
         # Handle selected documents
         if self.document_ids:
