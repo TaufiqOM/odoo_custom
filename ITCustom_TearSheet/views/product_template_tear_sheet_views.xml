@@ -9,6 +9,7 @@
                 <page string="Tear Sheet" name="tear_sheet">
                     <group>
                         <field name="tear_sheet_pdf" filename="tear_sheet_pdf_filename" widget="pdf_viewer"/>
+                        <field name="tear_sheet_pdf_upload_date" readonly="1"/>
                     </group>
                 </page>
             </xpath>
@@ -23,6 +24,7 @@
                 <page string="Upload File PDF" name="file_pdf">
                     <group>
                         <field name="file_pdf" filename="file_pdf_filename" widget="pdf_viewer"/>
+                        <field name="file_pdf_upload_date" readonly="1"/>
                     </group>
                 </page>
             </xpath>
