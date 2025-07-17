@@ -1,0 +1,130 @@
+<odoo>
+    <!-- Action Window untuk Custom Report (All Reports) -->
+    <record id="action_custom_report" model="ir.actions.act_window">
+        <field name="name">Custom Reports</field>
+        <field name="res_model">custom.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new custom report!
+            </p>
+        </field>
+    </record>
+
+    <!-- Action Window untuk Exim Reports -->
+    <record id="action_exim_reports" model="ir.actions.act_window">
+        <field name="name">Exim Reports</field>
+        <field name="res_model">custom.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('report_type', '=', 'exim')]</field>
+        <field name="context">{'default_report_type': 'exim'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Exim report!
+            </p>
+        </field>
+    </record>
+
+    <!-- Action Window untuk CS Reports -->
+    <record id="action_cs_reports" model="ir.actions.act_window">
+        <field name="name">CS Reports</field>
+        <field name="res_model">custom.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('report_type', '=', 'cs')]</field>
+        <field name="context">{'default_report_type': 'cs'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new CS report!
+            </p>
+        </field>
+    </record>
+
+    <!-- List View untuk Custom Report -->
+    <record id="view_custom_report_list" model="ir.ui.view">
+        <field name="name">custom.report.list</field>
+        <field name="model">custom.report</field>
+        <field name="arch" type="xml">
+            <list string="Custom Reports">
+                <field name="name"/>
+                <field name="report_date"/>
+                <field name="report_type"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View untuk Custom Report -->
+    <record id="view_custom_report_search" model="ir.ui.view">
+        <field name="name">custom.report.search</field>
+        <field name="model">custom.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Custom Reports">
+                <field name="name"/>
+                <field name="report_type"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="Exim" name="exim" domain="[('report_type', '=', 'exim')]"/>
+                <filter string="CS" name="cs" domain="[('report_type', '=', 'cs')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Report Type" name="group_report_type" context="{'group_by': 'report_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Top Level Menu -->
+    <menuitem
+        id="menu_custom_report_root"
+        name="Custom Reports"
+        sequence="10"/>
+
+    <!-- Sub Menu Items -->
+    <menuitem
+        id="menu_custom_report_all"
+        name="All Reports"
+        parent="menu_custom_report_root"
+        sequence="10"
+        action="action_custom_report"/>
+        
+    <!-- Exim Sub-Menus -->
+    <menuitem
+        id="menu_exim"
+        name="Exim"
+        parent="menu_custom_report_root"
+        sequence="20"/>
+        
+    <menuitem
+        id="menu_exim_commercial_invoice"
+        name="COMMERCIAL INVOICE"
+        parent="menu_exim"
+        sequence="10"
+        action="action_exim_reports"/>
+        
+    <menuitem
+        id="menu_exim_pre_shipping"
+        name="Pre Shipping"
+        parent="menu_exim"
+        sequence="20"
+        action="action_exim_reports"/>
+        
+    <!-- CS Sub-Menus -->
+    <menuitem
+        id="menu_cs"
+        name="CS"
+        parent="menu_custom_report_root"
+        sequence="30"/>
+        
+    <menuitem
+        id="menu_cs_product"
+        name="Product"
+        parent="menu_cs"
+        sequence="10"
+        action="action_cs_reports"/>
+        
+    <menuitem
+        id="menu_cs_import_product"
+        name="Import Product"
+        parent="menu_cs"
+        sequence="20"
+        action="action_cs_reports"/>
+</odoo>
