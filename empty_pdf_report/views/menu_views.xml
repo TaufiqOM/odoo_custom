@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Action to open PDF in new tab -->
+        <record id="action_open_empty_pdf_wizard" model="ir.actions.act_url">
+            <field name="name">Empty PDF Report</field>
+            <field name="url">/empty_pdf_report/generate</field>
+            <field name="target">new</field>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem
+            id="menu_empty_pdf_report_root"
+            name="Empty PDF Report"
+            sequence="10"
+            web_icon="empty_pdf_report,static/description/icon.png"
+        />
+        
+        <menuitem
+            id="menu_empty_pdf_report_action"
+            name="Generate Empty PDF"
+            parent="menu_empty_pdf_report_root"
+            sequence="10"
+            action="action_open_empty_pdf_wizard"
+        />
+    </data>
+</odoo>
