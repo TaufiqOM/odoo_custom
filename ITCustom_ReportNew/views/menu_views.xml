@@ -72,6 +72,12 @@
         </field>
     </record>
 
+    <record id="action_commercial_invoice_pdf" model="ir.actions.act_url">
+        <field name="name">COMMERCIAL INVOICE PDF</field>
+        <field name="url">/custom_report/commercial_invoice/pdf</field>
+        <field name="target">new</field> <!-- buka di tab baru -->
+    </record>
+
     <!-- Top Level Menu -->
     <menuitem
         id="menu_custom_report_root"
@@ -98,7 +104,7 @@
         name="COMMERCIAL INVOICE"
         parent="menu_exim"
         sequence="10"
-        action="action_exim_reports"/>
+        action="action_commercial_invoice_pdf"/>
         
     <menuitem
         id="menu_exim_pre_shipping"
