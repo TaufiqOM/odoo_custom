@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_demo_user,custom.demo.user,model_custom_demo,base.group_user,1,1,1,1
+access_custom_demo_line_user,custom.demo.line.user,model_custom_demo_line,base.group_user,1,1,1,1

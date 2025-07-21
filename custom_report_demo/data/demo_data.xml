@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Customers -->
+        <record id="demo_partner_1" model="res.partner">
+            <field name="name">ABC Corporation</field>
+            <field name="email">contact@abc-corp.com</field>
+            <field name="phone">+1-555-0101</field>
+            <field name="street">123 Business Ave</field>
+            <field name="city">New York</field>
+            <field name="zip">10001</field>
+            <field name="country_id" ref="base.us"/>
+        </record>
+
+        <record id="demo_partner_2" model="res.partner">
+            <field name="name">XYZ Industries</field>
+            <field name="email">info@xyz-ind.com</field>
+            <field name="phone">+1-555-0202</field>
+            <field name="street">456 Commerce St</field>
+            <field name="city">Los Angeles</field>
+            <field name="zip">90001</field>
+            <field name="country_id" ref="base.us"/>
+        </record>
+
+        <!-- Demo Products - Using valid Odoo 18 product types -->
+        <record id="demo_product_1" model="product.product">
+            <field name="name">Demo Product A</field>
+            <field name="default_code">DEMO-A001</field>
+            <field name="type">consu</field>
+            <field name="list_price">100.00</field>
+            <field name="standard_price">60.00</field>
+        </record>
+
+        <record id="demo_product_2" model="product.product">
+            <field name="name">Demo Product B</field>
+            <field name="default_code">DEMO-B002</field>
+            <field name="type">consu</field>
+            <field name="list_price">150.00</field>
+            <field name="standard_price">90.00</field>
+        </record>
+
+        <record id="demo_product_3" model="product.product">
+            <field name="name">Demo Product C</field>
+            <field name="default_code">DEMO-C003</field>
+            <field name="type">consu</field>
+            <field name="list_price">200.00</field>
+            <field name="standard_price">120.00</field>
+        </record>
+
+        <!-- Demo Custom Demo Records -->
+        <record id="demo_custom_1" model="custom.demo">
+            <field name="name">Sample Report 001</field>
+            <field name="partner_id" ref="demo_partner_1"/>
+            <field name="date">2024-01-15</field>
+            <field name="amount">1250.00</field>
+            <field name="description">First demo report with sample data for testing purposes</field>
+            <field name="state">confirmed</field>
+        </record>
+
+        <record id="demo_custom_2" model="custom.demo">
+            <field name="name">Sample Report 002</field>
+            <field name="partner_id" ref="demo_partner_2"/>
+            <field name="date">2024-01-20</field>
+            <field name="amount">2850.00</field>
+            <field name="description">Second demo report with additional sample data</field>
+            <field name="state">draft</field>
+        </record>
+
+        <!-- Demo Lines for Report 001 -->
+        <record id="demo_line_1_1" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_1"/>
+            <field name="product_id" ref="demo_product_1"/>
+            <field name="quantity">5.0</field>
+            <field name="price_unit">100.00</field>
+        </record>
+
+        <record id="demo_line_1_2" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_1"/>
+            <field name="product_id" ref="demo_product_2"/>
+            <field name="quantity">3.0</field>
+            <field name="price_unit">150.00</field>
+        </record>
+
+        <record id="demo_line_1_3" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_1"/>
+            <field name="product_id" ref="demo_product_3"/>
+            <field name="quantity">2.0</field>
+            <field name="price_unit">200.00</field>
+        </record>
+
+        <!-- Demo Lines for Report 002 -->
+        <record id="demo_line_2_1" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_2"/>
+            <field name="product_id" ref="demo_product_1"/>
+            <field name="quantity">10.0</field>
+            <field name="price_unit">100.00</field>
+        </record>
+
+        <record id="demo_line_2_2" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_2"/>
+            <field name="product_id" ref="demo_product_2"/>
+            <field name="quantity">8.0</field>
+            <field name="price_unit">150.00</field>
+        </record>
+
+        <record id="demo_line_2_3" model="custom.demo.line">
+            <field name="demo_id" ref="demo_custom_2"/>
+            <field name="product_id" ref="demo_product_3"/>
+            <field name="quantity">5.0</field>
+            <field name="price_unit">200.00</field>
+        </record>
+    </data>
+</odoo>

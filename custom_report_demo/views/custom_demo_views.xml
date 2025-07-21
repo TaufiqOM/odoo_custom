@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_custom_demo_list" model="ir.ui.view">
+        <field name="name">custom.demo.list</field>
+        <field name="model">custom.demo</field>
+        <field name="arch" type="xml">
+            <list string="Custom Demos">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_custom_demo_form" model="ir.ui.view">
+        <field name="name">custom.demo.form</field>
+        <field name="model">custom.demo</field>
+        <field name="arch" type="xml">
+            <form string="Custom Demo">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" invisible="state != 'draft'"/>
+                    <button name="action_done" string="Done" type="object" invisible="state != 'confirmed'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" invisible="state not in ['confirmed', 'done']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Demo Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="total_amount"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="subtotal"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_custom_demo" model="ir.actions.act_window">
+        <field name="name">Custom Demo</field>
+        <field name="res_model">custom.demo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_custom_demo_root" name="Custom Demo" sequence="10"/>
+    <menuitem id="menu_custom_demo" name="Custom Demo" parent="menu_custom_demo_root" action="action_custom_demo" sequence="10"/>
+</odoo>
