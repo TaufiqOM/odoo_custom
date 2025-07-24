@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Report Action -->
-    <record id="action_report_custom_demo" model="ir.actions.report">
-        <field name="name">Custom Demo Report</field>
+    <!-- Commercial Invoice Report Action -->
+    <record id="action_report_commercial_invoice" model="ir.actions.report">
+        <field name="name">Commercial Invoice</field>
         <field name="model">custom.demo</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">custom_report_demo.report_custom_demo_template</field>
-        <field name="report_file">custom_report_demo.report_custom_demo_template</field>
-        <field name="print_report_name">'Custom Report - %s' % object.name</field>
+        <field name="report_name">custom_report_demo.report_commercial_invoice_template</field>
+        <field name="report_file">custom_report_demo.report_commercial_invoice_template</field>
+        <field name="print_report_name">'Commercial Invoice - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_custom_demo"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Pre Shipping Report Action -->
+    <record id="action_report_pre_shipping" model="ir.actions.report">
+        <field name="name">Pre Shipping</field>
+        <field name="model">custom.demo</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_report_demo.report_pre_shipping_template</field>
+        <field name="report_file">custom_report_demo.report_pre_shipping_template</field>
+        <field name="print_report_name">'Pre Shipping - %s' % object.name</field>
         <field name="binding_model_id" ref="model_custom_demo"/>
         <field name="binding_type">report</field>
     </record>

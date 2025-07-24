@@ -1,493 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="report_custom_demo_template">
+        <template id="report_pre_shipping_template">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
                         <div class="page">
-                            <!-- Baris 1: Tanggal & Waktu -->
-                            <div class="row">
-                                <div class="col-12 text-end">
+                            <!-- Header with Date/Time -->
+                            <div class="row mb-1">
+                                <div class="col-12 text-start">
                                     <small class="text-muted">
                                         <t t-set="now" t-value="datetime.datetime.now()"/>
                                         <t t-esc="now.strftime('%d/%m/%y, %H:%M')"/>
                                     </small>
                                 </div>
                             </div>
-                            <!-- Baris 2: (DRAFT) -->
-                            <div class="row mt-2">
+                            
+                            <!-- Small header -->
+                            <div class="row mb-1">
                                 <div class="col-12 text-center">
-                                    <u>
-                                        <em>(DRAFT)</em>
-                                    </u>
+                                    <small>Pre Shipping | TDP/NZ445</small>
                                 </div>
                             </div>
-                            <!-- Baris 3: Judul -->
-                            <div class="row mt-2">
+                            
+                            <!-- Main title -->
+                            <div class="row mb-1">
                                 <div class="col-12 text-center">
-                                    <h3>
-                                        <strong>COMMERCIAL INVOICE/ PACKING LIST</strong>
-                                    </h3>
+                                    <strong>Pre Shipping</strong>
                                 </div>
                             </div>
-                            <!-- Baris 4: Tabel Identitas -->
-                            <table class="table table-bordered mt-4" style="font-size:12px; width:100%;">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <strong>SHIPPER:</strong>
-                                            <br/>
-                                            PT OMEGA MAS
-                                            <br/>
-                                            DSN. WINONG TIMUR, DS. POHGADING.
-                                            <br/>
-                                            KEC. PASREPAN, KAB. PASURUAN,
-                                            <br/>
-                                            JAWA TIMUR 67175
-                                            <br/>
-                                            INDONESIA
-                                        </td>
-                                        <td>
-                                            <strong>BUYER:</strong>
-                                            <br/>
-                                            The Design Project,
-                                            <br/>
-                                            Home Ideas Centre, 165 The Strand,
-                                            <br/>
-                                            Pamell 1010, Phone 0275202727 - New Zealand
-                                            <br/>
-                                            Attn. Marg Farrell
-                                        </td>
-                                        <td>
-                                            <strong>INVOICE NO. AND DATE:</strong>
-                                            <br/>
-                                            282/TDP/NZ445/EXP/VII/25
-                                            <br/>
-                                            14 July 2025
-                                            <br/>
-                                            <strong>L/C NO. AND DATE OF ISSUE:</strong>
-                                            <br/>
-                                            <br/>
-                                            <strong>ISSUING BANK:</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>CONSIGNEE:</strong>
-                                            <br/>
-                                            The Design Project,
-                                            <br/>
-                                            Home Ideas Centre, 165 The Strand,
-                                            <br/>
-                                            Parnell 1010, Phone 0275202727 - New Zealand
-                                            <br/>
-                                            Attn. Marg Farrell
-                                        </td>
-                                        <td>
-                                            <strong>SHIP TO:</strong>
-                                            <br/>
-                                            None
-                                        </td>
-                                        <td>
-                                            <strong>NOTIFY PARTY:</strong>
-                                            <br/>
-                                            None
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>DEPARTURE DATE:</strong> 21 Jul 25
-                                            <br/>
-                                            <strong>ARRIVAL DATE:</strong> 16 Jul 25
-                                            <br/>
-                                            <strong>COUNTRY OF ORIGIN:</strong> INDONESIA
-                                        </td>
-                                        <td>
-                                            <strong>VESSEL/FLIGHT:</strong> SINAR SANUR 116N
-                                            <br/>
-                                            <strong>PORT OF LOADING:</strong> SURABAYA, INDONESIA
-                                            <br/>
-                                            <strong>PORT OF DISCHARGE:</strong> TAURANGA, NZ
-                                        </td>
-                                        <td>
-                                            <strong>REMARKS:</strong>
-                                            <br/>
-                                            Terms of Delivery and Payment
-                                            <br/>
-                                            Payment terms: D/A 30days
-                                            <br/>
-                                            Currency: NZD
-                                            <br/>
-                                            Shipment Mode: SEA SHIPMENT
-                                            <br/>
-                                            Shipment Terms: FOB
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- Deskripsi Barang -->
+                            
+                            <!-- Document info -->
+                            <div class="row mb-3">
+                                <div class="col-12 text-center">
+                                    TDP/NZ445, 14 July 2025<br/>
+                                    Status Shipping: Confirmed | Status Container: Regular
+                                </div>
+                            </div>
+                            
+                            <!-- Customer and Report Info -->
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <strong>Customer:</strong>
+                                    <span t-field="o.partner_id.name"/>
+                                    <br/>
+                                    <strong>Email:</strong>
+                                    <span t-field="o.partner_id.email"/>
+                                    <br/>
+                                    <strong>Phone:</strong>
+                                    <span t-field="o.partner_id.phone"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Report Number:</strong>
+                                    <span t-field="o.name"/>
+                                    <br/>
+                                    <strong>Date:</strong>
+                                    <span t-field="o.date"/>
+                                    <br/>
+                                    <strong>Status:</strong>
+                                    <span t-field="o.state"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
                             <div class="row mt-4">
                                 <div class="col-12">
-                                    <strong>Description of goods:</strong>
-                                    <br/>
-                                    1 X 20FT container, contains of:
-                                    <br/>
-                                    25 PCS OF Accessories Furniture, Wooden Furniture
-                                    <br/>
-                                    GW: 2,700.00 KGS
-                                    <br/>
-                                    No. Cont.:
-                                    <br/>
-                                    NW: 2,588.80 KGS
-                                    <br/>
-                                    Seal:
+                                    <strong>Description:</strong>
+                                    <p t-field="o.description"/>
                                 </div>
                             </div>
-                            <!-- Tabel Detail Barang -->
-                            <table class="table table-bordered mt-4" style="font-size:12px; width:100%;">
+                            
+                            <!-- Products Table -->
+                            <table class="table table-bordered mt-4">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">No</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">Description</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">Commodity</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">Material</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">Qty Pcs</th>
-                                        <th colspan="2" style="text-align:center;">Unit (Kg)</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align:center;">
-                                            <div>Total Prize</div>
-                                            <div>NZD</div>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align:center;">GW</th>
-                                        <th style="text-align:center;">NW</th>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-end">Unit Price</th>
+                                        <th class="text-end">Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>Accessoríes Furniture | 4420.19.00</td>
-                                        <td>Furniture</td>
-                                        <td>Wood</td>
-                                        <td class="text-center">13</td>
-                                        <td class="text-end">57.00</td>
-                                        <td class="text-end">44.00</td>
-                                        <td class="text-end">65.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">2</td>
-                                        <td>Wooden Furniture | 9403.60.90</td>
-                                        <td>Furniture</td>
-                                        <td>Wood</td>
-                                        <td class="text-center">12</td>
-                                        <td class="text-end">2,643.00</td>
-                                        <td class="text-end">2,544.00</td>
-                                        <td class="text-end">24,660.50</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="text-end">
-                                            <strong>TOTAL AMOUNT :</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>25</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>2,700.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>2,588.80</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>24,725.50</strong>
-                                        </td>
-                                    </tr>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <span t-field="line.product_id.default_code"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_id.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end"><strong>Total Amount:</strong></td>
+                                        <td class="text-end">
+                                            <strong><span t-field="o.total_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
-                            <!-- Tanda Tangan (Tidak Boleh Terpisah Halaman) -->
-                            <div class="row mt-5" style="page-break-inside: avoid;">
-                                <div class="col-6"></div>
-                                <!-- Kosongkan sisi kiri -->
-                                <div class="col-6 text-center">
-                                    <p>Pasuruan, 14 July 2025</p>
-                                    <p>
-                                        <strong>PT. OMEGA MAS</strong>
-                                    </p>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <p>
-                                        <strong>
-                                            <u>DIAN NURJANNAH</u>
-                                        </strong>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Page Break -->
-                            <div style="page-break-before: always;"></div>
-                            <!-- Header kiri-kanan -->
-                            <div class="row">
-                                <div class="col-6">
-                                    <small class="text-muted">
-                                        <t t-set="now2" t-value="datetime.datetime.now()"/>
-                                        <t t-esc="now2.strftime('%d/%m/%y, %H:%M')"/>
-                                    </small>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <strong>Invoice Doc | TDP/NZ445</strong>
-                                </div>
-                            </div>
-                            <!-- Info Invoice kanan -->
-                            <div class="row mt-2">
-                                <div class="col-6"></div>
-                                <div class="col-6 text-end" style="font-size: 12px;">
-                                    <div>
-                                        <strong>INVOICE No.:</strong> 282/TDP/NZ445/EXP/VII/25
-                                    </div>
-                                    <div>14 July 2025</div>
-                                    <div>Shipped by: SINAR SANUR 116N</div>
-                                    <div>Sailling On: 21 July 2025</div>
-                                    <div>From: SURABAYA</div>
-                                    <div>Sailling On: TAURANGA, NZ</div>
-                                </div>
-                            </div>
-                            <!-- Garis Horizontal -->
-                            <hr class="my-3"/>
-                            <!-- Tujuan -->
-                            <div class="row">
-                                <div class="col-12" style="font-size: 12px;">
-                                    <strong>TO:</strong> The Design Project,
-                                    <br/>
-        Home Ideas Centre, 165 The Strand,
-                                    <br/>
-        Parnell 1010, Phone 0275202727 - New Zealand
-                                    <br/>
-        Attn. Marg Farrell
-                                </div>
-                            </div>
-                            <!-- Tabel Produk -->
-                            <table class="table table-bordered mt-4" style="font-size:12px; width:100%;">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center;">Shipping Marks</th>
-                                        <th style="text-align:center;">Description</th>
-                                        <th style="text-align:center;">Quantity PCS</th>
-                                        <th style="text-align:center;">Unit/Price NZD</th>
-                                        <th style="text-align:center;">Amount NZD</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Accessories Furniture Group -->
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Accessories Furniture | 4420.19.00</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>88888- Touch Up Set</td>
-                                        <td class="text-center">1</td>
-                                        <td class="text-end">5.00</td>
-                                        <td class="text-end">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Total Kode 4420.19.00:</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>1</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>5.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>5.00</strong>
-                                        </td>
-                                    </tr>
-                                    <!-- Wooden Furniture Group -->
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Wooden Furniture | 9403.60.90</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>250307A- Tumball Kitchen</td>
-                                        <td class="text-center">1</td>
-                                        <td class="text-end">7,011.00</td>
-                                        <td class="text-end">7,011.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Total Kode 9403.60.90:</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>1</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>7,011.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>7,011.00</strong>
-                                        </td>
-                                    </tr>
-                                    <!-- Grand Total -->
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Grand Total :</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>2</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>10.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>10.00</strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- NOTE section -->
-                            <div class="row mt-3">
+                            
+                            <!-- Footer note -->
+                            <div class="row mt-4">
                                 <div class="col-12">
-                                    <strong>NOTE</strong>
-                                    <br/>
-                                    TOTAL SAY : Twenty Four Thousand Seven Hundred Twenty Five And Zero Five Cents
-                                </div>
-                            </div>
-                            <!-- BARU -->
-                            <!-- Page Break -->
-                            <div style="page-break-before: always;"></div>
-                            <!-- Header kiri-kanan -->
-                            <div class="row">
-                                <div class="col-6">
-                                    <small class="text-muted">
-                                        <t t-set="now2" t-value="datetime.datetime.now()"/>
-                                        <t t-esc="now2.strftime('%d/%m/%y, %H:%M')"/>
-                                    </small>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <strong>Invoice Doc | TDP/NZ445</strong>
-                                </div>
-                            </div>
-                            <!-- Info Invoice kanan -->
-                            <div class="row mt-2">
-                                <div class="col-6"></div>
-                                <div class="col-6 text-end" style="font-size: 12px;">
-                                    <div>
-                                        <strong>INVOICE No.:</strong> 282/TDP/NZ445/EXP/VII/25
-                                    </div>
-                                    <div>14 July 2025</div>
-                                    <div>Shipped by: SINAR SANUR 116N</div>
-                                    <div>Sailling On: 21 July 2025</div>
-                                    <div>From: SURABAYA</div>
-                                    <div>Sailling On: TAURANGA, NZ</div>
-                                </div>
-                            </div>
-                            <!-- Garis Horizontal -->
-                            <hr class="my-3"/>
-                            <!-- Tujuan -->
-                            <div class="row">
-                                <div class="col-12" style="font-size: 12px;">
-                                    <strong>TO:</strong> The Design Project,
-                                    <br/>
-        Home Ideas Centre, 165 The Strand,
-                                    <br/>
-        Parnell 1010, Phone 0275202727 - New Zealand
-                                    <br/>
-        Attn. Marg Farrell
-                                </div>
-                            </div>
-                            <!-- Tabel Produk -->
-                            <table class="table table-bordered mt-4" style="font-size:12px; width:100%;">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center;">Shipping Marks</th>
-                                        <th style="text-align:center;">Description</th>
-                                        <th style="text-align:center;">Quantity PCS</th>
-                                        <th style="text-align:center;">Unit/Price NZD</th>
-                                        <th style="text-align:center;">Amount NZD</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Accessories Furniture Group -->
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Accessories Furniture | 4420.19.00</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>88888- Touch Up Set</td>
-                                        <td class="text-center">1</td>
-                                        <td class="text-end">5.00</td>
-                                        <td class="text-end">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Total Kode 4420.19.00:</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>1</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>5.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>5.00</strong>
-                                        </td>
-                                    </tr>
-                                    <!-- Wooden Furniture Group -->
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Wooden Furniture | 9403.60.90</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>250307A- Tumball Kitchen</td>
-                                        <td class="text-center">1</td>
-                                        <td class="text-end">7,011.00</td>
-                                        <td class="text-end">7,011.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Total Kode 9403.60.90:</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>1</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>7,011.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>7,011.00</strong>
-                                        </td>
-                                    </tr>
-                                    <!-- Grand Total -->
-                                    <tr>
-                                        <td colspan="2">
-                                            <strong>Grand Total :</strong>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong>2</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>10.00</strong>
-                                        </td>
-                                        <td class="text-end">
-                                            <strong>10.00</strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- NOTE section -->
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <strong>NOTE</strong>
-                                    <br/>
-                                    TOTAL SAY : Twenty Four Thousand Seven Hundred Twenty Five And Zero Five Cents
+                                    <p class="text-muted">
+                                        <small>This is a pre-shipping report generated by Custom Report Demo module.</small>
+                                    </p>
                                 </div>
                             </div>
                         </div>

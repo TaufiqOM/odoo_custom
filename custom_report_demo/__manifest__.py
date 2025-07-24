@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'reports/custom_report_actions.xml',
         'reports/custom_report_template.xml',
+        'reports/report_pre_shipping_template.xml',
         'views/custom_demo_views.xml',
         'data/demo_data.xml',
     ],
