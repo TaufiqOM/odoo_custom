@@ -27,7 +27,7 @@
     <record id="action_appraisal_template" model="ir.actions.act_window">
         <field name="name">Template</field>
         <field name="res_model">appraisal.template</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_appraisal_template_config"
