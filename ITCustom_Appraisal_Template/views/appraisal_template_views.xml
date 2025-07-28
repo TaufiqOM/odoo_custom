@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_appraisal_template_form" model="ir.ui.view">
+        <field name="name">appraisal.template.form</field>
+        <field name="model">appraisal.template</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal Template">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_appraisal_template_tree" model="ir.ui.view">
+        <field name="name">appraisal.template.tree</field>
+        <field name="model">appraisal.template</field>
+        <field name="arch" type="xml">
+            <list string="Appraisal Template">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_appraisal_template" model="ir.actions.act_window">
+        <field name="name">Template</field>
+        <field name="res_model">appraisal.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_appraisal_template_config"
+              name="Template"
+              parent="hr_appraisal.menu_hr_appraisal_configuration"
+              action="action_appraisal_template"
+              sequence="30"/>
+</odoo>
