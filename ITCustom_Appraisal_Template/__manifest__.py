@@ -1,14 +1,15 @@
 {
     'name': 'Appraisal Template',
     'version': '1.0',
-    'depends': ['hr_appraisal'],
+    'depends': ['hr_appraisal', 'hr_appraisal_skills'],
     'category': 'Human Resources',
     'summary': 'Manage Templates for Appraisal',
-    'description': 'Add configuration menu for appraisal templates',
+    'description': 'Add configuration menu for appraisal templates and extend hr.appraisal with Skills tab enhancements',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/appraisal_template_views.xml',
+        'views/hr_appraisal_skills_inherit.xml',
     ],
     'installable': True,
     'application': False,
