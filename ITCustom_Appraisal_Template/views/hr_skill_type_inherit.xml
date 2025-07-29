@@ -11,6 +11,11 @@
                 <label for="kepemimpinan" string="Kepemimpinan"/>
                 <field name="kepemimpinan" widget="boolean_toggle" nolabel="1"/>
             </xpath>
+            
+            <!-- Add definisi field to the skills list view -->
+            <xpath expr="//field[@name='skill_ids']/list/field[@name='name']" position="after">
+                <field name="definisi"/>
+            </xpath>
         </field>
     </record>
 </odoo>
