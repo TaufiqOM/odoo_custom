@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'views/appraisal_template_views.xml',
         'views/hr_appraisal_skills_inherit.xml',
+        'views/hr_skill_type_inherit.xml',
     ],
     'installable': True,
     'application': False,
