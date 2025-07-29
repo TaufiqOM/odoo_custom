@@ -9,7 +9,7 @@
             <!-- Add kepemimpinan field with label after the name field -->
             <xpath expr="//field[@name='name']" position="after">
                 <label for="kepemimpinan" string="Kepemimpinan"/>
-                <field name="kepemimpinan" widget="boolean_toggle" class="ms-2"/>
+                <field name="kepemimpinan" widget="boolean_toggle" nolabel="1"/>
             </xpath>
         </field>
     </record>
