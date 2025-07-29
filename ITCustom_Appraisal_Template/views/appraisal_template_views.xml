@@ -9,10 +9,15 @@
                     <group>
                         <field name="name"/>
                         <field name="department_id"/>
-                        <field name="skill_type_id"/>
+                    </group>
+                    <group string="Skill Types">
+                        <field name="skill_types" widget="many2many_tags"/>
                     </group>
                     <group string="Skills">
-                        <field name="skill_names" nolabel="1" placeholder="Pilih skill type untuk melihat daftar skill"/>
+                        <field name="skills" widget="many2many_tags" domain="[('skill_type_id', 'in', skill_types)]"/>
+                    </group>
+                    <group string="Skill Names">
+                        <field name="skill_names" nolabel="1" readonly="1"/>
                     </group>
                 </sheet>
             </form>
@@ -27,7 +32,7 @@
             <list string="Appraisal Template">
                 <field name="name"/>
                 <field name="department_id"/>
-                <field name="skill_type_id"/>
+                <field name="skill_types" widget="many2many_tags"/>
             </list>
         </field>
     </record>
