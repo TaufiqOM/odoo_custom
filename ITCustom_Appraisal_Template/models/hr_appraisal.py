@@ -81,12 +81,8 @@ class HrAppraisal(models.Model):
                         'level_progress': 0,
                     })
                 
-                # Determine justification
-                is_leadership_skill = skill.skill_type_id.kepemimpinan
-                justification = _('Loaded as leadership skill') if is_leadership_skill else \
-                    _('Loaded from template: %s') % ', '.join(
-                        matching_templates.filtered(lambda t: skill.id in t.skills.ids).mapped('name')
-                    )
+                # Use skill's definisi as justification
+                justification = skill.definisi or _('Tidak ada defisini untuk skill ini')
                 
                 # Create new appraisal skill, letting Odoo apply default values for unspecified fields
                 values = {
@@ -99,8 +95,8 @@ class HrAppraisal(models.Model):
                 
                 new_skill = self.env['hr.appraisal.skill'].create(values)
                 created_skills.append(new_skill)
-                _logger.info("Created appraisal skill: %s (Type: %s, Leadership: %s, Skill Level: %s)",
-                             skill.name, skill.skill_type_id.name, is_leadership_skill, default_level.name)
+                _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s)",
+                             skill.name, skill.skill_type_id.name, default_level.name)
         
         if created_skills:
             return {
