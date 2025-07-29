@@ -4,6 +4,8 @@ from odoo.exceptions import UserError
 class HrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
 
+    memiliki_bawahan = fields.Boolean(string="Memiliki Bawahan")
+
     def action_get_skills_data(self):
         """
         Action to get skills data from appraisal templates based on department_id
