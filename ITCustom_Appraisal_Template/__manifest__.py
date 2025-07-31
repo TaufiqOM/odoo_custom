@@ -12,6 +12,7 @@
         'views/hr_appraisal_skills_inherit.xml',
         'views/hr_skill_type_inherit.xml',
         'views/hr_appraisal_inherit.xml',
+        'views/hr_appraisal_skill_inherit.xml',
     ],
     'installable': True,
     'application': False,

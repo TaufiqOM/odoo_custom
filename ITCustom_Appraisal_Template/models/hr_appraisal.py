@@ -4,6 +4,13 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+class HrAppraisalSkill(models.Model):
+    _inherit = 'hr.appraisal.skill'
+    
+    sequence = fields.Integer(string='Sequence', default=10)
+    
+    _order = "sequence, id"
+
 class HrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
 
@@ -56,47 +63,67 @@ class HrAppraisal(models.Model):
         if not skills_to_add:
             raise UserError(_('No skills found in templates or leadership skills for department %s') % self.department_id.name)
         
-        # Create appraisal skills
-        created_skills = []
+        # Sort skills by bobot_nilai (weight value) of their skill type
+        # Group skills by bobot_nilai value
+        skill_groups = {}
         for skill_id in skills_to_add:
-            # Check if skill already exists in appraisal
-            existing_skill = self.skill_ids.filtered(
-                lambda s: s.skill_id.id == skill_id
-            )
+            skill = self.env['hr.skill'].browse(skill_id)
+            bobot_nilai = skill.skill_type_id.bobot_nilai or 0
             
-            if not existing_skill:
-                skill = self.env['hr.skill'].browse(skill_id)
+            if bobot_nilai not in skill_groups:
+                skill_groups[bobot_nilai] = []
+            skill_groups[bobot_nilai].append(skill_id)
+        
+        # Sort the groups by bobot_nilai in descending order
+        sorted_bobot_nilai = sorted(skill_groups.keys(), reverse=True)
+        
+        # Create appraisal skills, grouped by bobot_nilai
+        created_skills = []
+        for bobot_nilai in sorted_bobot_nilai:
+            skill_ids = skill_groups[bobot_nilai]
+            _logger.info("Processing %d skills with bobot_nilai %d%%", len(skill_ids), bobot_nilai)
+            
+            for skill_id in skill_ids:
+                # Check if skill already exists in appraisal
+                existing_skill = self.skill_ids.filtered(
+                    lambda s: s.skill_id.id == skill_id
+                )
                 
-                # Get default skill level (Belum Dinilai) for this skill type
-                default_level = self.env['hr.skill.level'].search([
-                    ('skill_type_id', '=', skill.skill_type_id.id),
-                    ('name', '=', 'Belum Dinilai')
-                ], limit=1)
-                
-                if not default_level:
-                    _logger.info("No 'Belum Dinilai' skill level found for skill type %s, creating default", skill.skill_type_id.name)
-                    default_level = self.env['hr.skill.level'].create({
-                        'name': 'Belum Dinilai',
+                if not existing_skill:
+                    skill = self.env['hr.skill'].browse(skill_id)
+                    
+                    # Get default skill level (Belum Dinilai) for this skill type
+                    default_level = self.env['hr.skill.level'].search([
+                        ('skill_type_id', '=', skill.skill_type_id.id),
+                        ('name', '=', 'Belum Dinilai')
+                    ], limit=1)
+                    
+                    if not default_level:
+                        _logger.info("No 'Belum Dinilai' skill level found for skill type %s, creating default", skill.skill_type_id.name)
+                        default_level = self.env['hr.skill.level'].create({
+                            'name': 'Belum Dinilai',
+                            'skill_type_id': skill.skill_type_id.id,
+                            'level_progress': 0,
+                        })
+                    
+                    # Use skill's definisi as justification
+                    justification = skill.definisi or _('Tidak ada definisi untuk skill ini')
+                    
+                    # Create new appraisal skill, letting Odoo apply default values for unspecified fields
+                    # Set sequence based on bobot_nilai (lower sequence for higher bobot_nilai)
+                    values = {
+                        'appraisal_id': self.id,
                         'skill_type_id': skill.skill_type_id.id,
-                        'level_progress': 0,
-                    })
-                
-                # Use skill's definisi as justification
-                justification = skill.definisi or _('Tidak ada defisini untuk skill ini')
-                
-                # Create new appraisal skill, letting Odoo apply default values for unspecified fields
-                values = {
-                    'appraisal_id': self.id,
-                    'skill_type_id': skill.skill_type_id.id,
-                    'skill_id': skill.id,
-                    'skill_level_id': default_level.id,
-                    'justification': justification,
-                }
-                
-                new_skill = self.env['hr.appraisal.skill'].create(values)
-                created_skills.append(new_skill)
-                _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s)",
-                             skill.name, skill.skill_type_id.name, default_level.name)
+                        'skill_id': skill.id,
+                        'skill_level_id': default_level.id,
+                        'justification': justification,
+                        'sequence': 100 - bobot_nilai,  # Lower sequence for higher bobot_nilai
+                    }
+                    
+                    new_skill = self.env['hr.appraisal.skill'].create(values)
+                    created_skills.append(new_skill)
+                    _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s, Bobot Nilai: %d%%)",
+                                 skill.name, skill.skill_type_id.name, default_level.name, bobot_nilai)
         
         if created_skills:
             return {
@@ -104,7 +131,7 @@ class HrAppraisal(models.Model):
                 'tag': 'display_notification',
                 'params': {
                     'title': _('Success'),
-                    'message': _('%d skills have been loaded from appraisal templates and leadership skills for department %s') % (
+                    'message': _('%d skills have been loaded from appraisal templates and leadership skills for department %s, sorted by weight value') % (
                         len(created_skills), self.department_id.name),
                     'type': 'success',
                     'sticky': False,
