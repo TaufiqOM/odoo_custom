@@ -6,8 +6,13 @@
         <field name="model">hr.skill.type</field>
         <field name="inherit_id" ref="hr_skills.hr_employee_skill_type_view_form"/>
         <field name="arch" type="xml">
-            <!-- Add kepemimpinan field with label after the name field -->
+            <!-- Add bobot_nilai field with label after the name field -->
             <xpath expr="//field[@name='name']" position="after">
+                <label for="bobot_nilai" string="Bobot Nilai"/>
+                <div>
+                    <field name="bobot_nilai" class="oe_inline"/>
+                    <span class="oe_inline">%</span>
+                </div>
                 <label for="kepemimpinan" string="Kepemimpinan"/>
                 <field name="kepemimpinan" widget="boolean_toggle" nolabel="1"/>
             </xpath>
