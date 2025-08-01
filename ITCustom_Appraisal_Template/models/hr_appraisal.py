@@ -52,23 +52,60 @@ class HrAppraisal(models.Model):
                 appraisal.skill_type_averages = ""
                 continue
                 
-            # Group skills by skill type
-            skill_types = {}
+            # Group skills by skill type and their weight percentage (bobot_penilaian)
+            skill_types_by_weight = {}
+            skill_types_details = {}
+            
             for skill in appraisal.skill_ids:
                 if skill.skill_type_id:
-                    if skill.skill_type_id.id not in skill_types:
-                        skill_types[skill.skill_type_id.id] = {
+                    weight = skill.bobot_penilaian or 0
+                    skill_type_id = skill.skill_type_id.id
+                    
+                    # Store skill type details
+                    if skill_type_id not in skill_types_details:
+                        skill_types_details[skill_type_id] = {
                             'name': skill.skill_type_id.name,
-                            'skills': []
+                            'weight': weight
                         }
-                    skill_types[skill.skill_type_id.id]['skills'].append(skill.level_progress)
+                    
+                    # Group by weight
+                    if weight not in skill_types_by_weight:
+                        skill_types_by_weight[weight] = {}
+                    
+                    if skill_type_id not in skill_types_by_weight[weight]:
+                        skill_types_by_weight[weight][skill_type_id] = []
+                    
+                    skill_types_by_weight[weight][skill_type_id].append(skill.level_progress)
             
-            # Calculate averages
+            # Calculate averages for each weight group
             averages_html = ""
-            for skill_type_data in skill_types.values():
-                if skill_type_data['skills']:
-                    average = sum(skill_type_data['skills']) / len(skill_type_data['skills'])
-                    averages_html += f"<div><strong>{skill_type_data['name']}:</strong> {average:.1f}%</div>"
+            
+            # Sort weights in descending order
+            sorted_weights = sorted(skill_types_by_weight.keys(), reverse=True)
+            
+            for weight in sorted_weights:
+                averages_html += f"<h4>Weight {weight}% Group:</h4>"
+                
+                # Calculate average for each skill type in this weight group
+                group_total = 0
+                group_count = 0
+                
+                for skill_type_id, progress_values in skill_types_by_weight[weight].items():
+                    if progress_values:
+                        skill_type_average = sum(progress_values) / len(progress_values)
+                        skill_type_name = skill_types_details[skill_type_id]['name']
+                        averages_html += f"<div style='margin-left: 20px;'><strong>{skill_type_name}:</strong> {skill_type_average:.1f}%</div>"
+                        
+                        # Add to group total for overall group average
+                        group_total += skill_type_average
+                        group_count += 1
+                
+                # Calculate overall group average
+                if group_count > 0:
+                    group_average = group_total / group_count
+                    averages_html += f"<div style='margin-left: 20px; margin-top: 5px;'><strong>Group Average:</strong> {group_average:.1f}%</div>"
+                
+                averages_html += "<br/>"
             
             appraisal.skill_type_averages = averages_html
 
