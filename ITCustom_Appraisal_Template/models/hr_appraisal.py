@@ -38,6 +38,39 @@ class HrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
 
     memiliki_bawahan = fields.Boolean(string="Memiliki Bawahan")
+    
+    skill_type_averages = fields.Html(
+        string="Skill Type Averages",
+        compute="_compute_skill_type_averages",
+        store=False,
+    )
+    
+    @api.depends('skill_ids', 'skill_ids.skill_type_id', 'skill_ids.level_progress')
+    def _compute_skill_type_averages(self):
+        for appraisal in self:
+            if not appraisal.skill_ids:
+                appraisal.skill_type_averages = ""
+                continue
+                
+            # Group skills by skill type
+            skill_types = {}
+            for skill in appraisal.skill_ids:
+                if skill.skill_type_id:
+                    if skill.skill_type_id.id not in skill_types:
+                        skill_types[skill.skill_type_id.id] = {
+                            'name': skill.skill_type_id.name,
+                            'skills': []
+                        }
+                    skill_types[skill.skill_type_id.id]['skills'].append(skill.level_progress)
+            
+            # Calculate averages
+            averages_html = ""
+            for skill_type_data in skill_types.values():
+                if skill_type_data['skills']:
+                    average = sum(skill_type_data['skills']) / len(skill_type_data['skills'])
+                    averages_html += f"<div><strong>{skill_type_data['name']}:</strong> {average:.1f}%</div>"
+            
+            appraisal.skill_type_averages = averages_html
 
     def action_get_skills_data(self):
         """
