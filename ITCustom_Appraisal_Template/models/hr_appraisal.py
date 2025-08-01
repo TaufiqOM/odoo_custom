@@ -77,8 +77,11 @@ class HrAppraisal(models.Model):
                     
                     skill_types_by_weight[weight][skill_type_id].append(skill.level_progress)
             
-            # Calculate averages for each weight group
+            # Calculate averages for each weight group and final score
             averages_html = ""
+            
+            # Store group averages for final score calculation
+            group_averages = []
             
             # Sort weights in descending order
             sorted_weights = sorted(skill_types_by_weight.keys(), reverse=True)
@@ -104,8 +107,28 @@ class HrAppraisal(models.Model):
                 if group_count > 0:
                     group_average = group_total / group_count
                     averages_html += f"<div style='margin-left: 20px; margin-top: 5px;'><strong>Group Average:</strong> {group_average:.1f}%</div>"
+                    
+                    # Store group average and weight for final score calculation
+                    group_averages.append({
+                        'average': group_average,
+                        'weight': weight
+                    })
                 
                 averages_html += "<br/>"
+            
+            # Calculate final score
+            final_score = 0
+            calculation_details = []
+            for group_data in group_averages:
+                group_contribution = group_data['average'] * (group_data['weight'] / 100)
+                final_score += group_contribution
+                calculation_details.append(f"{group_data['average']:.1f} * {group_data['weight'] / 100:.2f}")
+            
+            # Add final score to the display
+            calculation_string = " + ".join(calculation_details)
+            averages_html += f"<div style='margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;'><h4>Final Score Calculation:</h4>"
+            averages_html += f"<div><strong>Formula:</strong> {calculation_string}</div>"
+            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f}%</div></div>"
             
             appraisal.skill_type_averages = averages_html
 
