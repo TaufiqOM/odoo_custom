@@ -45,6 +45,47 @@ class HrAppraisal(models.Model):
         store=False,
     )
     
+    def _convert_percentage_to_points(self, percentage, skill_type_id):
+        """Convert percentage to point scale (0-N) based on skill type levels"""
+        # Get all skill levels for this skill type, sorted by level_progress
+        skill_levels = self.env['hr.skill.level'].search(
+            [('skill_type_id', '=', skill_type_id)], 
+            order='level_progress ASC'
+        )
+        
+        if not skill_levels:
+            return 0
+            
+        # Create mapping of level_progress to point values
+        level_mapping = {}
+        for i, level in enumerate(skill_levels):
+            level_mapping[level.level_progress] = i
+            
+        # Get sorted level_progress values
+        sorted_levels = sorted(level_mapping.keys())
+        
+        # Find the closest level
+        for i in range(len(sorted_levels)):
+            if percentage == sorted_levels[i]:
+                return level_mapping[sorted_levels[i]]
+            elif percentage < sorted_levels[i]:
+                # If percentage is between two levels, round to the nearest one
+                if i == 0:
+                    return level_mapping[sorted_levels[0]]
+                else:
+                    prev_level_pct = sorted_levels[i-1]
+                    curr_level_pct = sorted_levels[i]
+                    # Calculate distances to both levels
+                    dist_to_prev = percentage - prev_level_pct
+                    dist_to_curr = curr_level_pct - percentage
+                    # Return the closest level
+                    if dist_to_prev <= dist_to_curr:
+                        return level_mapping[prev_level_pct]
+                    else:
+                        return level_mapping[curr_level_pct]
+        # If percentage is higher than the highest level, return the highest point value
+        return level_mapping[sorted_levels[-1]] if sorted_levels else 0
+
     @api.depends('skill_ids', 'skill_ids.skill_type_id', 'skill_ids.level_progress')
     def _compute_skill_type_averages(self):
         for appraisal in self:
@@ -75,7 +116,9 @@ class HrAppraisal(models.Model):
                     if skill_type_id not in skill_types_by_weight[weight]:
                         skill_types_by_weight[weight][skill_type_id] = []
                     
-                    skill_types_by_weight[weight][skill_type_id].append(skill.level_progress)
+                    # Convert percentage to points and store
+                    points = self._convert_percentage_to_points(skill.level_progress, skill.skill_type_id.id)
+                    skill_types_by_weight[weight][skill_type_id].append(points)
             
             # Calculate averages for each weight group and final score
             averages_html = ""
@@ -93,11 +136,11 @@ class HrAppraisal(models.Model):
                 group_total = 0
                 group_count = 0
                 
-                for skill_type_id, progress_values in skill_types_by_weight[weight].items():
-                    if progress_values:
-                        skill_type_average = sum(progress_values) / len(progress_values)
+                for skill_type_id, points_values in skill_types_by_weight[weight].items():
+                    if points_values:
+                        skill_type_average = sum(points_values) / len(points_values)
                         skill_type_name = skill_types_details[skill_type_id]['name']
-                        averages_html += f"<div style='margin-left: 20px;'><strong>{skill_type_name}:</strong> {skill_type_average:.1f}%</div>"
+                        averages_html += f"<div style='margin-left: 20px;'><strong>{skill_type_name}:</strong> {skill_type_average:.2f} points</div>"
                         
                         # Add to group total for overall group average
                         group_total += skill_type_average
@@ -106,7 +149,7 @@ class HrAppraisal(models.Model):
                 # Calculate overall group average
                 if group_count > 0:
                     group_average = group_total / group_count
-                    averages_html += f"<div style='margin-left: 20px; margin-top: 5px;'><strong>Group Average:</strong> {group_average:.1f}%</div>"
+                    averages_html += f"<div style='margin-left: 20px; margin-top: 5px;'><strong>Group Average:</strong> {group_average:.2f} points</div>"
                     
                     # Store group average and weight for final score calculation
                     group_averages.append({
@@ -122,13 +165,13 @@ class HrAppraisal(models.Model):
             for group_data in group_averages:
                 group_contribution = group_data['average'] * (group_data['weight'] / 100)
                 final_score += group_contribution
-                calculation_details.append(f"{group_data['average']:.1f} * {group_data['weight'] / 100:.2f}")
+                calculation_details.append(f"{group_data['average']:.2f} * {group_data['weight'] / 100:.2f}")
             
             # Add final score to the display
             calculation_string = " + ".join(calculation_details)
             averages_html += f"<div style='margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;'><h4>Final Score Calculation:</h4>"
             averages_html += f"<div><strong>Formula:</strong> {calculation_string}</div>"
-            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f}%</div></div>"
+            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f} points</div></div>"
             
             appraisal.skill_type_averages = averages_html
 
