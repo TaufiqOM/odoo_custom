@@ -7,6 +7,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='skill_type_id']" position="before">
                 <field name="sequence" invisible="1"/>
+                <field name="bobot_penilaian" string="Bobot Penilaian (%)"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_hr_appraisal_skills_list_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.skills.list.inherit</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal_skills.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_skills']//field[@name='skill_ids']/list/field[@name='skill_id']" position="before">
+                <field name="bobot_penilaian" string="Bobot Penilaian (%)" width="100px"/>
             </xpath>
         </field>
     </record>

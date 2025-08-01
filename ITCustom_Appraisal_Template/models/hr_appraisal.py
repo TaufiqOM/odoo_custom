@@ -8,6 +8,13 @@ class HrAppraisalSkill(models.Model):
     _inherit = 'hr.appraisal.skill'
     
     sequence = fields.Integer(string='Sequence', default=10)
+    bobot_penilaian = fields.Integer(
+        string='Bobot Penilaian',
+        related='skill_type_id.bobot_nilai',
+        readonly=True,
+        store=True,
+        help='Bobot penilaian dalam persentase dari jenis skill ini'
+    )
     
     _order = "sequence, id"
 
