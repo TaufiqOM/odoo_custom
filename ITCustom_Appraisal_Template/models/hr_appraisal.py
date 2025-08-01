@@ -16,6 +16,22 @@ class HrAppraisalSkill(models.Model):
         help='Bobot penilaian dalam persentase dari jenis skill ini'
     )
     
+    bobot_penilaian_percentage = fields.Char(
+        string='Bobot Penilaian Percentage',
+        compute='_compute_bobot_penilaian_percentage',
+        readonly=True,
+        store=False,
+        help='Bobot penilaian dengan tanda persen'
+    )
+    
+    @api.depends('bobot_penilaian')
+    def _compute_bobot_penilaian_percentage(self):
+        for record in self:
+            if record.bobot_penilaian:
+                record.bobot_penilaian_percentage = f"{record.bobot_penilaian}%"
+            else:
+                record.bobot_penilaian_percentage = "0%"
+    
     _order = "sequence, id"
 
 class HrAppraisal(models.Model):

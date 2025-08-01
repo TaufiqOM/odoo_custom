@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='skill_type_id']" position="before">
                 <field name="sequence" invisible="1"/>
-                <field name="bobot_penilaian" string="Bobot Penilaian (%)"/>
+                <field name="bobot_penilaian_percentage" string="Bobot Penilaian"/>
             </xpath>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="hr_appraisal_skills.view_hr_appraisal_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='page_skills']//field[@name='skill_ids']/list/field[@name='skill_id']" position="before">
-                <field name="bobot_penilaian" string="Bobot Penilaian (%)" width="100px"/>
+                <field name="bobot_penilaian_percentage" string="Bobot Penilaian" width="100px"/>
             </xpath>
         </field>
     </record>
