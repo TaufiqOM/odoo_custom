@@ -72,16 +72,20 @@ class HrAppraisal(models.Model):
                         .performance-guidelines-table {
                             width: 100%;
                             border-collapse: collapse;
+                            border: 2px solid #444; /* border luar tabel */
                         }
                         .performance-guidelines-table th, 
                         .performance-guidelines-table td {
-                            border: 1px solid #ddd;
+                            border: 1px solid #444; /* garis antar sel */
                             padding: 8px;
                             text-align: left;
                         }
                         .performance-guidelines-table th {
                             background-color: #f2f2f2;
                             font-weight: bold;
+                        }
+                        .performance-guidelines-table tr:not(:last-child) td {
+                            border-bottom: 1px solid #999; /* garis antar baris */
                         }
                     </style>
                     <table class="performance-guidelines-table">
