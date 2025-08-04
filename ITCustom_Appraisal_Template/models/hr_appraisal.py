@@ -45,6 +45,83 @@ class HrAppraisal(models.Model):
         store=False,
     )
     
+    performance_guidelines_html = fields.Html(
+        string="Performance Guidelines",
+        compute="_compute_performance_guidelines_html",
+        store=False,
+    )
+    
+    @api.depends('department_id')
+    def _compute_performance_guidelines_html(self):
+        for appraisal in self:
+            if appraisal.department_id:
+                # Find appraisal templates that match the department_id
+                matching_templates = self.env['appraisal.template'].search([
+                    ('department_id', '=', appraisal.department_id.id)
+                ])
+                
+                # Collect all performance guidelines from matching templates
+                all_guidelines = []
+                for template in matching_templates:
+                    all_guidelines.extend(template.performance_guidelines)
+                
+                # Generate HTML for display
+                if all_guidelines:
+                    html_content = """
+                    <style>
+                        .performance-guidelines-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        .performance-guidelines-table th, 
+                        .performance-guidelines-table td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        .performance-guidelines-table th {
+                            background-color: #f2f2f2;
+                            font-weight: bold;
+                        }
+                    </style>
+                    <table class="performance-guidelines-table">
+                        <thead>
+                            <tr>
+                                <th>Faktor Perilaku Kerja</th>
+                                <th>Definisi</th>
+                                <th>NILAI 1<br/>(Kurang Diterima)</th>
+                                <th>NILAI 2<br/>(Butuh Arahan)</th>
+                                <th>NILAI 3<br/>(Standart)</th>
+                                <th>NILAI 4<br/>(Performa Bagus)</th>
+                                <th>NILAI 5<br/>(Luar Biasa)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    """
+                    
+                    for guideline in all_guidelines:
+                        html_content += f"""
+                            <tr>
+                                <td>{guideline.factor or ''}</td>
+                                <td>{guideline.definition or ''}</td>
+                                <td>{guideline.value_1 or ''}</td>
+                                <td>{guideline.value_2 or ''}</td>
+                                <td>{guideline.value_3 or ''}</td>
+                                <td>{guideline.value_4 or ''}</td>
+                                <td>{guideline.value_5 or ''}</td>
+                            </tr>
+                        """
+                    
+                    html_content += """
+                        </tbody>
+                    </table>
+                    """
+                    appraisal.performance_guidelines_html = html_content
+                else:
+                    appraisal.performance_guidelines_html = False
+            else:
+                appraisal.performance_guidelines_html = False
+    
     def _convert_percentage_to_points(self, percentage, skill_type_id):
         """Convert percentage to point scale (0-N) based on skill type levels"""
         # Get all skill levels for this skill type, sorted by level_progress
