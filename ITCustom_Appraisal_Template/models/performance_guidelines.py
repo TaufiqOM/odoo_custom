@@ -6,10 +6,14 @@ class PerformanceGuidelines(models.Model):
     _order = 'sequence, id'
 
     sequence = fields.Integer('Sequence', default=10)
-    template_id = fields.Many2one(
+    template_id_umum = fields.Many2one(
         'appraisal.template', 
-        string='Appraisal Template', 
-        required=True, 
+        string='Appraisal Template Umum', 
+        ondelete='cascade'
+    )
+    template_id_khusus = fields.Many2one(
+        'appraisal.template', 
+        string='Appraisal Template Khusus', 
         ondelete='cascade'
     )
     factor = fields.Char('Faktor Perilaku Kerja', required=True)

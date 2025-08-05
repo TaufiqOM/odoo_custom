@@ -5,10 +5,15 @@ class AppraisalTemplate(models.Model):
     _description = 'Appraisal Template'
 
     name = fields.Char('Template Name', required=True)
-    performance_guidelines = fields.One2many(
+    performance_guidelines_umum = fields.One2many(
         'performance.guidelines',
-        'template_id',
-        string='Pedoman Penilaian Kerja'
+        'template_id_umum',
+        string='Pedoman Penilaian Kerja Umum'
+    )
+    performance_guidelines_khusus = fields.One2many(
+        'performance.guidelines',
+        'template_id_khusus',
+        string='Pedoman Penilaian Kerja Khusus'
     )
     department_id = fields.Many2one(
         'hr.department', 

@@ -63,7 +63,9 @@ class HrAppraisal(models.Model):
                 # Collect all performance guidelines from matching templates
                 all_guidelines = []
                 for template in matching_templates:
-                    all_guidelines.extend(template.performance_guidelines)
+                    # Combine both umum and khusus guidelines
+                    all_guidelines.extend(template.performance_guidelines_umum)
+                    all_guidelines.extend(template.performance_guidelines_khusus)
                 
                 # Generate HTML for display
                 if all_guidelines:
