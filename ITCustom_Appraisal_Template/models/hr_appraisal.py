@@ -45,8 +45,14 @@ class HrAppraisal(models.Model):
         store=False,
     )
     
-    performance_guidelines_html = fields.Html(
-        string="Performance Guidelines",
+    performance_guidelines_umum_html = fields.Html(
+        string="Performance Guidelines Umum",
+        compute="_compute_performance_guidelines_html",
+        store=False,
+    )
+    
+    performance_guidelines_khusus_html = fields.Html(
+        string="Performance Guidelines Khusus",
         compute="_compute_performance_guidelines_html",
         store=False,
     )
@@ -60,73 +66,92 @@ class HrAppraisal(models.Model):
                     ('department_id', '=', appraisal.department_id.id)
                 ])
                 
-                # Collect all performance guidelines from matching templates
-                all_guidelines = []
+                # Collect umum guidelines
+                umum_guidelines = []
                 for template in matching_templates:
-                    # Combine both umum and khusus guidelines
-                    all_guidelines.extend(template.performance_guidelines_umum)
-                    all_guidelines.extend(template.performance_guidelines_khusus)
+                    umum_guidelines.extend(template.performance_guidelines_umum)
                 
-                # Generate HTML for display
-                if all_guidelines:
-                    html_content = """
-                    <style>
-                        .performance-guidelines-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            border: 2px solid #444; /* border luar tabel */
-                        }
-                        .performance-guidelines-table th, 
-                        .performance-guidelines-table td {
-                            border: 1px solid #444; /* garis antar sel */
-                            padding: 8px;
-                            text-align: left;
-                        }
-                        .performance-guidelines-table th {
-                            background-color: #f2f2f2;
-                            font-weight: bold;
-                        }
-                        .performance-guidelines-table tr:not(:last-child) td {
-                            border-bottom: 1px solid #999; /* garis antar baris */
-                        }
-                    </style>
-                    <table class="performance-guidelines-table">
-                        <thead>
-                            <tr>
-                                <th>Faktor Perilaku Kerja</th>
-                                <th>Definisi</th>
-                                <th>NILAI 1<br/>(Kurang Diterima)</th>
-                                <th>NILAI 2<br/>(Butuh Arahan)</th>
-                                <th>NILAI 3<br/>(Standart)</th>
-                                <th>NILAI 4<br/>(Performa Bagus)</th>
-                                <th>NILAI 5<br/>(Luar Biasa)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                    """
-                    
-                    for guideline in all_guidelines:
-                        html_content += f"""
-                            <tr>
-                                <td>{guideline.factor or ''}</td>
-                                <td>{guideline.definition or ''}</td>
-                                <td>{guideline.value_1 or ''}</td>
-                                <td>{guideline.value_2 or ''}</td>
-                                <td>{guideline.value_3 or ''}</td>
-                                <td>{guideline.value_4 or ''}</td>
-                                <td>{guideline.value_5 or ''}</td>
-                            </tr>
-                        """
-                    
-                    html_content += """
-                        </tbody>
-                    </table>
-                    """
-                    appraisal.performance_guidelines_html = html_content
+                # Collect khusus guidelines
+                khusus_guidelines = []
+                for template in matching_templates:
+                    khusus_guidelines.extend(template.performance_guidelines_khusus)
+                
+                # Generate HTML for Umum guidelines
+                if umum_guidelines:
+                    umum_html = self._generate_guidelines_html(umum_guidelines, "Umum")
+                    appraisal.performance_guidelines_umum_html = umum_html
                 else:
-                    appraisal.performance_guidelines_html = False
+                    appraisal.performance_guidelines_umum_html = False
+                
+                # Generate HTML for Khusus guidelines
+                if khusus_guidelines:
+                    khusus_html = self._generate_guidelines_html(khusus_guidelines, "Khusus")
+                    appraisal.performance_guidelines_khusus_html = khusus_html
+                else:
+                    appraisal.performance_guidelines_khusus_html = False
             else:
-                appraisal.performance_guidelines_html = False
+                appraisal.performance_guidelines_umum_html = False
+                appraisal.performance_guidelines_khusus_html = False
+    
+    def _generate_guidelines_html(self, guidelines, type_name):
+        """Helper method to generate HTML for guidelines"""
+        if not guidelines:
+            return False
+            
+        html_content = f"""
+        <style>
+            .performance-guidelines-table-{type_name.lower()} {{
+                width: 100%;
+                border-collapse: collapse;
+                border: 2px solid #444;
+            }}
+            .performance-guidelines-table-{type_name.lower()} th, 
+            .performance-guidelines-table-{type_name.lower()} td {{
+                border: 1px solid #444;
+                padding: 8px;
+                text-align: left;
+            }}
+            .performance-guidelines-table-{type_name.lower()} th {{
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }}
+            .performance-guidelines-table-{type_name.lower()} tr:not(:last-child) td {{
+                border-bottom: 1px solid #999;
+            }}
+        </style>
+        <table class="performance-guidelines-table-{type_name.lower()}">
+            <thead>
+                <tr>
+                    <th>Faktor Perilaku Kerja</th>
+                    <th>Definisi</th>
+                    <th>NILAI 1<br/>(Kurang Diterima)</th>
+                    <th>NILAI 2<br/>(Butuh Arahan)</th>
+                    <th>NILAI 3<br/>(Standart)</th>
+                    <th>NILAI 4<br/>(Performa Bagus)</th>
+                    <th>NILAI 5<br/>(Luar Biasa)</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        for guideline in guidelines:
+            html_content += f"""
+                <tr>
+                    <td>{guideline.factor or ''}</td>
+                    <td>{guideline.definition or ''}</td>
+                    <td>{guideline.value_1 or ''}</td>
+                    <td>{guideline.value_2 or ''}</td>
+                    <td>{guideline.value_3 or ''}</td>
+                    <td>{guideline.value_4 or ''}</td>
+                    <td>{guideline.value_5 or ''}</td>
+                </tr>
+            """
+        
+        html_content += """
+            </tbody>
+        </table>
+        """
+        return html_content
     
     def _convert_percentage_to_points(self, percentage, skill_type_id):
         """Convert percentage to point scale (0-N) based on skill type levels"""

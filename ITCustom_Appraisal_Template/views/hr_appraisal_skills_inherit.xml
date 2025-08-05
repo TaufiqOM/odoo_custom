@@ -20,13 +20,23 @@
                                             icon="fa-download"
                                             help="Get skills data for this appraisal"/>
                                 </div>
-                                <!-- Performance Guidelines Box -->
-                                <div class="card mb-3" invisible="not performance_guidelines_html">
+                                <!-- Performance Guidelines Umum Box -->
+                                <div class="card mb-3" invisible="not performance_guidelines_umum_html">
                                     <div class="card-header">
-                                        <h5 class="card-title">Pedoman Penilaian Kerja</h5>
+                                        <h5 class="card-title">Pedoman Penilaian Kerja Umum</h5>
                                     </div>
                                     <div class="card-body">
-                                        <field name="performance_guidelines_html" widget="html" nolabel="1" readonly="1"/>
+                                        <field name="performance_guidelines_umum_html" widget="html" nolabel="1" readonly="1"/>
+                                    </div>
+                                </div>
+                                
+                                <!-- Performance Guidelines Khusus Box -->
+                                <div class="card mb-3" invisible="not performance_guidelines_khusus_html">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Pedoman Penilaian Kerja Khusus</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <field name="performance_guidelines_khusus_html" widget="html" nolabel="1" readonly="1"/>
                                     </div>
                                 </div>
                                 <field mode="list" nolabel="1" name="skill_ids"
