@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='manager_ids']" position="after">
                 <label for="memiliki_bawahan" string="Memiliki Bawahan"/>
-                <field name="memiliki_bawahan" widget="boolean_toggle" nolabel="1" readonly="1"/>
+                <field name="memiliki_bawahan" widget="boolean_toggle" nolabel="1"/>
             </xpath>
         </field>
     </record>
