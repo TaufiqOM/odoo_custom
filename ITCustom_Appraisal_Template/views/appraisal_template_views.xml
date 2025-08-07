@@ -9,6 +9,8 @@
                     <group>
                         <field name="name"/>
                         <field name="department_id"/>
+                        <label for="atasan" string="Atasan"/>
+                        <field name="atasan" widget="boolean_toggle" nolabel="1"/>
                     </group>
                     <group string="Skill Types">
                         <field name="skill_types" widget="many2many_tags"/>
@@ -66,6 +68,7 @@
             <list string="Appraisal Template">
                 <field name="name"/>
                 <field name="department_id"/>
+                <field name="atasan" widget="boolean_toggle"/>
                 <field name="skill_types" widget="many2many_tags"/>
             </list>
         </field>

@@ -19,6 +19,10 @@ class AppraisalTemplate(models.Model):
         'hr.department', 
         string='Department'
     )
+    atasan = fields.Boolean(
+        string='Atasan',
+        help='Check if this template is for managerial/leadership positions'
+    )
     skill_types = fields.Many2many(
         'hr.skill.type',
         'appraisal_template_skill_type_rel',

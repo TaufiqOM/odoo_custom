@@ -308,7 +308,7 @@ class HrAppraisal(models.Model):
     def action_get_skills_data(self):
         """
         Action to get skills data from appraisal templates based on department_id
-        and include leadership skills if memiliki_bawahan is True.
+        and atasan field, matching memiliki_bawahan status.
         This method will be triggered by the 'Get Data' button in the Skills tab
         """
         self.ensure_one()
@@ -319,19 +319,23 @@ class HrAppraisal(models.Model):
         # Initialize list for skills to add
         skills_to_add = []
         
-        # Find appraisal templates that match the department_id
+        # Find appraisal templates that match both department_id and atasan field
+        # Filter templates where atasan matches memiliki_bawahan
         matching_templates = self.env['appraisal.template'].search([
-            ('department_id', '=', self.department_id.id)
+            ('department_id', '=', self.department_id.id),
+            ('atasan', '=', self.memiliki_bawahan)
         ])
-        _logger.info("Found %d matching templates for department %s",
-                     len(matching_templates), self.department_id.name)
+        _logger.info("Found %d matching templates for department %s with atasan=%s",
+                     len(matching_templates), self.department_id.name, self.memiliki_bawahan)
         
         # Get skills from matching templates
         for template in matching_templates:
             skills_to_add.extend(template.skills.ids)
-            _logger.info("Added %d skills from template %s", len(template.skills), template.name)
+            _logger.info("Added %d skills from template %s (atasan=%s)", 
+                         len(template.skills), template.name, template.atasan)
         
         # If memiliki_bawahan is True, include skills from skill types where kepemimpinan is True
+        # This is additional filtering based on leadership skills
         if self.memiliki_bawahan:
             leadership_skill_types = self.env['hr.skill.type'].search([
                 ('kepemimpinan', '=', True)
