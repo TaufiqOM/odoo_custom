@@ -26,6 +26,13 @@
                                     <field name="performance_guidelines_khusus_html" widget="html" nolabel="1"/>
                                 </div>
                             </page>
+                            
+                            <!-- Tab for Pedoman Penilaian Kepemimpinan (conditional) -->
+                            <page string="Pedoman Penilaian Kepemimpinan" invisible="not performance_guidelines_kepemimpinan_html">
+                                <div class="oe_readonly">
+                                    <field name="performance_guidelines_kepemimpinan_html" widget="html" nolabel="1"/>
+                                </div>
+                            </page>
                         </notebook>
                         
                         <footer>

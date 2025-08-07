@@ -13,6 +13,10 @@ class PerformanceGuidelinesWizard(models.TransientModel):
         string="Pedoman Penilaian Kerja Khusus",
         compute="_compute_guidelines_html"
     )
+    performance_guidelines_kepemimpinan_html = fields.Html(
+        string="Pedoman Penilaian Kepemimpinan",
+        compute="_compute_guidelines_html"
+    )
     
     @api.depends('appraisal_id')
     def _compute_guidelines_html(self):
@@ -33,6 +37,12 @@ class PerformanceGuidelinesWizard(models.TransientModel):
                 for template in matching_templates:
                     khusus_guidelines.extend(template.performance_guidelines_khusus)
                 
+                # Collect kepemimpinan guidelines (only if has subordinates)
+                kepemimpinan_guidelines = []
+                if wizard.appraisal_id.memiliki_bawahan:
+                    for template in matching_templates:
+                        kepemimpinan_guidelines.extend(template.performance_guidelines_kepemimpinan)
+                
                 # Generate HTML for Umum guidelines
                 if umum_guidelines:
                     umum_html = self._generate_guidelines_html(umum_guidelines, "Umum")
@@ -46,9 +56,17 @@ class PerformanceGuidelinesWizard(models.TransientModel):
                     wizard.performance_guidelines_khusus_html = khusus_html
                 else:
                     wizard.performance_guidelines_khusus_html = False
+                
+                # Generate HTML for Kepemimpinan guidelines (only if has subordinates)
+                if kepemimpinan_guidelines:
+                    kepemimpinan_html = self._generate_guidelines_html(kepemimpinan_guidelines, "Kepemimpinan")
+                    wizard.performance_guidelines_kepemimpinan_html = kepemimpinan_html
+                else:
+                    wizard.performance_guidelines_kepemimpinan_html = False
             else:
                 wizard.performance_guidelines_umum_html = False
                 wizard.performance_guidelines_khusus_html = False
+                wizard.performance_guidelines_kepemimpinan_html = False
     
     def _generate_guidelines_html(self, guidelines, type_name):
         """Helper method to generate HTML for guidelines"""
