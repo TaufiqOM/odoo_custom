@@ -283,6 +283,28 @@ class HrAppraisal(models.Model):
             
             appraisal.skill_type_averages = averages_html
 
+    def action_view_guidelines(self):
+        """
+        Action to open the performance guidelines wizard
+        This method will be triggered by the 'Lihat Pedoman' button in the Skills tab
+        """
+        self.ensure_one()
+        
+        # Create wizard record
+        wizard = self.env['performance.guidelines.wizard'].create({
+            'appraisal_id': self.id,
+        })
+        
+        return {
+            'name': _('Pedoman Penilaian Kerja'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'performance.guidelines.wizard',
+            'view_mode': 'form',
+            'res_id': wizard.id,
+            'target': 'new',
+            'view_id': self.env.ref('ITCustom_Appraisal_Template.view_performance_guidelines_wizard_form').id,
+        }
+
     def action_get_skills_data(self):
         """
         Action to get skills data from appraisal templates based on department_id
