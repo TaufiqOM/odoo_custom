@@ -341,6 +341,13 @@ class HrAppraisal(models.Model):
         if not skills_to_add:
             raise UserError(_('No skills found in templates or leadership skills for department %s') % self.department_id.name)
         
+        # DELETE ALL EXISTING SKILLS FIRST
+        _logger.info("Deleting all existing skills for appraisal ID %s", self.id)
+        if self.skill_ids:
+            deleted_count = len(self.skill_ids)
+            self.skill_ids.unlink()
+            _logger.info("Deleted %d existing skills", deleted_count)
+        
         # Sort skills by bobot_nilai (weight value) of their skill type
         # Group skills by bobot_nilai value
         skill_groups = {}
@@ -362,46 +369,40 @@ class HrAppraisal(models.Model):
             _logger.info("Processing %d skills with bobot_nilai %d%%", len(skill_ids), bobot_nilai)
             
             for skill_id in skill_ids:
-                # Check if skill already exists in appraisal
-                existing_skill = self.skill_ids.filtered(
-                    lambda s: s.skill_id.id == skill_id
-                )
+                skill = self.env['hr.skill'].browse(skill_id)
                 
-                if not existing_skill:
-                    skill = self.env['hr.skill'].browse(skill_id)
-                    
-                    # Get default skill level (Belum Dinilai) for this skill type
-                    default_level = self.env['hr.skill.level'].search([
-                        ('skill_type_id', '=', skill.skill_type_id.id),
-                        ('name', '=', 'Belum Dinilai')
-                    ], limit=1)
-                    
-                    if not default_level:
-                        _logger.info("No 'Belum Dinilai' skill level found for skill type %s, creating default", skill.skill_type_id.name)
-                        default_level = self.env['hr.skill.level'].create({
-                            'name': 'Belum Dinilai',
-                            'skill_type_id': skill.skill_type_id.id,
-                            'level_progress': 0,
-                        })
-                    
-                    # Use skill's definisi as justification
-                    justification = skill.definisi or _('Tidak ada definisi untuk skill ini')
-                    
-                    # Create new appraisal skill, letting Odoo apply default values for unspecified fields
-                    # Set sequence based on bobot_nilai (lower sequence for higher bobot_nilai)
-                    values = {
-                        'appraisal_id': self.id,
+                # Get default skill level (Belum Dinilai) for this skill type
+                default_level = self.env['hr.skill.level'].search([
+                    ('skill_type_id', '=', skill.skill_type_id.id),
+                    ('name', '=', 'Belum Dinilai')
+                ], limit=1)
+                
+                if not default_level:
+                    _logger.info("No 'Belum Dinilai' skill level found for skill type %s, creating default", skill.skill_type_id.name)
+                    default_level = self.env['hr.skill.level'].create({
+                        'name': 'Belum Dinilai',
                         'skill_type_id': skill.skill_type_id.id,
-                        'skill_id': skill.id,
-                        'skill_level_id': default_level.id,
-                        'justification': justification,
-                        'sequence': 100 - bobot_nilai,  # Lower sequence for higher bobot_nilai
-                    }
-                    
-                    new_skill = self.env['hr.appraisal.skill'].create(values)
-                    created_skills.append(new_skill)
-                    _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s, Bobot Nilai: %d%%)",
-                                 skill.name, skill.skill_type_id.name, default_level.name, bobot_nilai)
+                        'level_progress': 0,
+                    })
+                
+                # Use skill's definisi as justification
+                justification = skill.definisi or _('Tidak ada definisi untuk skill ini')
+                
+                # Create new appraisal skill, letting Odoo apply default values for unspecified fields
+                # Set sequence based on bobot_nilai (lower sequence for higher bobot_nilai)
+                values = {
+                    'appraisal_id': self.id,
+                    'skill_type_id': skill.skill_type_id.id,
+                    'skill_id': skill.id,
+                    'skill_level_id': default_level.id,
+                    'justification': justification,
+                    'sequence': 100 - bobot_nilai,  # Lower sequence for higher bobot_nilai
+                }
+                
+                new_skill = self.env['hr.appraisal.skill'].create(values)
+                created_skills.append(new_skill)
+                _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s, Bobot Nilai: %d%%)",
+                             skill.name, skill.skill_type_id.name, default_level.name, bobot_nilai)
         
         if created_skills:
             return {
