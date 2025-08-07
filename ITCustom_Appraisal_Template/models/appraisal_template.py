@@ -15,6 +15,11 @@ class AppraisalTemplate(models.Model):
         'template_id_khusus',
         string='Pedoman Penilaian Kerja Khusus'
     )
+    performance_guidelines_kepemimpinan = fields.One2many(
+        'performance.guidelines',
+        'template_id_kepemimpinan',
+        string='Pedoman Penilaian Kepemimpinan'
+    )
     department_id = fields.Many2one(
         'hr.department', 
         string='Department'

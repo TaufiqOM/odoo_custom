@@ -16,6 +16,11 @@ class PerformanceGuidelines(models.Model):
         string='Appraisal Template Khusus', 
         ondelete='cascade'
     )
+    template_id_kepemimpinan = fields.Many2one(
+        'appraisal.template', 
+        string='Appraisal Template Kepemimpinan', 
+        ondelete='cascade'
+    )
     factor = fields.Char('Faktor Perilaku Kerja', required=True)
     definition = fields.Text('Definisi')
     value_1 = fields.Text('NILAI 1 (Kurang Diterima)')
