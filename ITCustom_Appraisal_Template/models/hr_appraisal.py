@@ -334,21 +334,6 @@ class HrAppraisal(models.Model):
             _logger.info("Added %d skills from template %s (atasan=%s)", 
                          len(template.skills), template.name, template.atasan)
         
-        # If memiliki_bawahan is True, include skills from skill types where kepemimpinan is True
-        # This is additional filtering based on leadership skills
-        if self.memiliki_bawahan:
-            leadership_skill_types = self.env['hr.skill.type'].search([
-                ('kepemimpinan', '=', True)
-            ])
-            _logger.info("Found %d skill types with kepemimpinan=True", len(leadership_skill_types))
-            
-            for skill_type in leadership_skill_types:
-                leadership_skills = self.env['hr.skill'].search([
-                    ('skill_type_id', '=', skill_type.id)
-                ])
-                _logger.info("Found %d skills for skill type %s", len(leadership_skills), skill_type.name)
-                skills_to_add.extend(leadership_skills.ids)
-        
         # Remove duplicates
         skills_to_add = list(set(skills_to_add))
         _logger.info("Total unique skills to add: %d", len(skills_to_add))

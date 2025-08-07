@@ -8,9 +8,3 @@ class HrSkillType(models.Model):
         default=0,
         help='Bobot nilai untuk jenis skill ini'
     )
-    
-    kepemimpinan = fields.Boolean(
-        string='Kepemimpinan',
-        default=False,
-        help='Menandai jenis skill ini sebagai skill kepemimpinan'
-    )

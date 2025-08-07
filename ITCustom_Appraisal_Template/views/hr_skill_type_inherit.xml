@@ -13,8 +13,6 @@
                     <field name="bobot_nilai" class="oe_inline"/>
                     <span class="oe_inline">%</span>
                 </div>
-                <label for="kepemimpinan" string="Kepemimpinan"/>
-                <field name="kepemimpinan" widget="boolean_toggle" nolabel="1"/>
             </xpath>
             
             <!-- Add definisi field to the skills list view -->
