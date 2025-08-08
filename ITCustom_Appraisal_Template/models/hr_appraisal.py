@@ -267,19 +267,23 @@ class HrAppraisal(models.Model):
                 
                 averages_html += "<br/>"
             
-            # Calculate final score
-            final_score = 0
+            # Calculate score
+            score = 0
             calculation_details = []
             for group_data in group_averages:
                 group_contribution = group_data['average'] * (group_data['weight'] / 100)
-                final_score += group_contribution
+                score += group_contribution
                 calculation_details.append(f"{group_data['average']:.2f} * {group_data['weight'] / 100:.2f}")
             
-            # Add final score to the display
+            # Calculate final score (Score * 20)
+            final_score = score * 20
+            
+            # Add score and final score to the display
             calculation_string = " + ".join(calculation_details)
-            averages_html += f"<div style='margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;'><h4>Final Score Calculation:</h4>"
+            averages_html += f"<div style='margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;'><h4>Score Calculation:</h4>"
             averages_html += f"<div><strong>Formula:</strong> {calculation_string}</div>"
-            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f} points</div></div>"
+            averages_html += f"<div><strong>Score:</strong> {score:.2f} points</div>"
+            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f} points (Score × 20)</div></div>"
             
             appraisal.skill_type_averages = averages_html
 
