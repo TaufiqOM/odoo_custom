@@ -6,11 +6,11 @@ class PerformanceGuidelinesWizard(models.TransientModel):
     
     appraisal_id = fields.Many2one('hr.appraisal', string='Appraisal', required=True)
     performance_guidelines_umum_html = fields.Html(
-        string="Pedoman Penilaian Kerja Umum",
+        string="Pedoman Penilaian Perilaku Kerja",
         compute="_compute_guidelines_html"
     )
     performance_guidelines_khusus_html = fields.Html(
-        string="Pedoman Penilaian Kerja Khusus",
+        string="Pedoman Penilaian Hasil Kerja",
         compute="_compute_guidelines_html"
     )
     performance_guidelines_kepemimpinan_html = fields.Html(
@@ -72,6 +72,22 @@ class PerformanceGuidelinesWizard(models.TransientModel):
         """Helper method to generate HTML for guidelines"""
         if not guidelines:
             return False
+        
+        # Determine the header based on type_name
+        if type_name == "Umum":
+            header_text = "Faktor Perilaku Kerja"
+        elif type_name == "Khusus":
+            header_text = "Hasil Kerja"
+        else:  # Kepemimpinan
+            header_text = "Faktor Perilaku Kerja"
+            
+        # Determine the display title based on type_name
+        if type_name == "Umum":
+            display_title = "Pedoman Penilaian Perilaku Kerja"
+        elif type_name == "Khusus":
+            display_title = "Pedoman Penilaian Hasil Kerja"
+        else:  # Kepemimpinan
+            display_title = "Pedoman Penilaian Kepemimpinan"
             
         html_content = f"""
         <style>
@@ -104,12 +120,12 @@ class PerformanceGuidelinesWizard(models.TransientModel):
             }}
         </style>
         <div class="guidelines-header">
-            <h4>Pedoman Penilaian Kerja {type_name}</h4>
+            <h4>{display_title}</h4>
         </div>
         <table class="performance-guidelines-table-{type_name.lower()}">
             <thead>
                 <tr>
-                    <th>Faktor Perilaku Kerja</th>
+                    <th>{header_text}</th>
                     <th>Definisi</th>
                     <th>NILAI 1<br/>(Kurang Diterima)</th>
                     <th>NILAI 2<br/>(Butuh Arahan)</th>

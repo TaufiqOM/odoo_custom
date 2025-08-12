@@ -24,6 +24,14 @@ class HrAppraisalSkill(models.Model):
         help='Bobot penilaian dengan tanda persen'
     )
     
+    bobot_penilaian_points = fields.Integer(
+        string='Bobot Penilaian Points',
+        related='skill_type_id.bobot_nilai',
+        readonly=True,
+        store=True,
+        help='Bobot penilaian dalam bentuk angka poin'
+    )
+    
     @api.depends('bobot_penilaian')
     def _compute_bobot_penilaian_percentage(self):
         for record in self:
@@ -283,7 +291,7 @@ class HrAppraisal(models.Model):
             averages_html += f"<div style='margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;'><h4>Score Calculation:</h4>"
             averages_html += f"<div><strong>Formula:</strong> {calculation_string}</div>"
             averages_html += f"<div><strong>Score:</strong> {score:.2f} points</div>"
-            averages_html += f"<div><strong>Final Score:</strong> {final_score:.2f} points (Score × 20)</div></div>"
+            averages_html += f"<div style='margin-top: 10px;'><h5><strong>Final Score: {final_score:.2f} points </strong><h5></div></div>"
             
             appraisal.skill_type_averages = averages_html
 

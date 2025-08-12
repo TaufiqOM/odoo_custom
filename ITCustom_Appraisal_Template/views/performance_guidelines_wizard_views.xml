@@ -14,14 +14,14 @@
                         
                         <notebook>
                             <!-- Tab for Pedoman Penilaian Kerja Umum -->
-                            <page string="Pedoman Penilaian Kerja Umum" invisible="not performance_guidelines_umum_html">
+                            <page string="Pedoman Penilaian Perilaku Kerja" invisible="not performance_guidelines_umum_html">
                                 <div class="oe_readonly">
                                     <field name="performance_guidelines_umum_html" widget="html" nolabel="1"/>
                                 </div>
                             </page>
                             
                             <!-- Tab for Pedoman Penilaian Kerja Khusus -->
-                            <page string="Pedoman Penilaian Kerja Khusus" invisible="not performance_guidelines_khusus_html">
+                            <page string="Pedoman Penilaian Hasil Kerja" invisible="not performance_guidelines_khusus_html">
                                 <div class="oe_readonly">
                                     <field name="performance_guidelines_khusus_html" widget="html" nolabel="1"/>
                                 </div>
