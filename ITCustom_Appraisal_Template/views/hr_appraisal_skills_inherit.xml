@@ -46,7 +46,7 @@
                                     </list>
                                 </field>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" groups="__export__.res_groups_153_3ec33a7c">
                                 <div class="card">
                                     <div class="card-header">
                                         <h5 class="card-title">Skill Type Averages</h5>
