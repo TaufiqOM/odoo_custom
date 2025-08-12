@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <t t-name="ITCustom_HideSkillsAddButton.SkillsListRenderer" t-inherit="hr_skills.SkillsListRenderer" t-inherit-mode="extension">
+        <!-- Sembunyikan tombol ADD di header skill group -->
+        <xpath expr="//button[@class='btn btn-secondary btn-sm']" position="replace"/>
+        
+        <!-- Sembunyikan tombol ADD di bagian bawah -->
+        <xpath expr="//button[@t-on-click='props.onAdd']" position="replace"/>
+        
+        <!-- Sembunyikan tombol Create new Skills -->
+        <xpath expr="//button[@t-on-click='skillTypesAction']" position="replace"/>
+        
+        <!-- Sembunyikan tombol Pick a skill from the list -->
+        <xpath expr="//button[@t-on-click='props.onAdd']" position="replace"/>
+    </t>
+</odoo>
