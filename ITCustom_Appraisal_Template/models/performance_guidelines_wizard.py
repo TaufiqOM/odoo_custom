@@ -22,26 +22,29 @@ class PerformanceGuidelinesWizard(models.TransientModel):
     def _compute_guidelines_html(self):
         for wizard in self:
             if wizard.appraisal_id and wizard.appraisal_id.department_id:
-                # Find appraisal templates that match the department_id
-                matching_templates = self.env['appraisal.template'].search([
-                    ('department_id', '=', wizard.appraisal_id.department_id.id)
-                ])
+                # Determine the correct template based on employee role
+                is_atasan = wizard.appraisal_id.memiliki_bawahan
                 
-                # Collect umum guidelines
-                umum_guidelines = []
-                for template in matching_templates:
-                    umum_guidelines.extend(template.performance_guidelines_umum)
+                # Find the specific template that matches department and role
+                template = self.env['appraisal.template'].search([
+                    ('department_id', '=', wizard.appraisal_id.department_id.id),
+                    ('atasan', '=', is_atasan)
+                ], limit=1)
                 
-                # Collect khusus guidelines
-                khusus_guidelines = []
-                for template in matching_templates:
-                    khusus_guidelines.extend(template.performance_guidelines_khusus)
+                # If no specific template found, try without role filter
+                if not template:
+                    template = self.env['appraisal.template'].search([
+                        ('department_id', '=', wizard.appraisal_id.department_id.id)
+                    ], limit=1)
                 
-                # Collect kepemimpinan guidelines (only if has subordinates)
+                # Collect guidelines from the specific template
+                umum_guidelines = template.performance_guidelines_umum if template else []
+                khusus_guidelines = template.performance_guidelines_khusus if template else []
+                
+                # Only collect kepemimpinan guidelines if employee is a manager/atasan
                 kepemimpinan_guidelines = []
-                if wizard.appraisal_id.memiliki_bawahan:
-                    for template in matching_templates:
-                        kepemimpinan_guidelines.extend(template.performance_guidelines_kepemimpinan)
+                if template and is_atasan:
+                    kepemimpinan_guidelines = template.performance_guidelines_kepemimpinan
                 
                 # Generate HTML for Umum guidelines
                 if umum_guidelines:
