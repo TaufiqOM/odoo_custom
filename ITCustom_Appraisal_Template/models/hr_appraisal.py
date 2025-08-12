@@ -405,30 +405,15 @@ class HrAppraisal(models.Model):
             for skill_id in skill_ids:
                 skill = self.env['hr.skill'].browse(skill_id)
                 
-                # Get default skill level (Belum Dinilai) for this skill type
-                default_level = self.env['hr.skill.level'].search([
-                    ('skill_type_id', '=', skill.skill_type_id.id),
-                    ('name', '=', 'Belum Dinilai')
-                ], limit=1)
-                
-                if not default_level:
-                    _logger.info("No 'Belum Dinilai' skill level found for skill type %s, creating default", skill.skill_type_id.name)
-                    default_level = self.env['hr.skill.level'].create({
-                        'name': 'Belum Dinilai',
-                        'skill_type_id': skill.skill_type_id.id,
-                        'level_progress': 0,
-                    })
-                
                 # Use skill's definisi as justification
                 justification = skill.definisi or _('Tidak ada definisi untuk skill ini')
                 
-                # Create new appraisal skill, letting Odoo apply default values for unspecified fields
-                # Set sequence based on bobot_nilai (lower sequence for higher bobot_nilai)
+                # Create new appraisal skill dengan skill_level_id kosong (tidak diisi default)
                 values = {
                     'appraisal_id': self.id,
                     'skill_type_id': skill.skill_type_id.id,
                     'skill_id': skill.id,
-                    'skill_level_id': default_level.id,
+                    'skill_level_id': False,  # Kosongkan skill_level_id
                     'justification': justification,
                     'sequence': 100 - bobot_nilai,  # Lower sequence for higher bobot_nilai
                 }
@@ -436,7 +421,7 @@ class HrAppraisal(models.Model):
                 new_skill = self.env['hr.appraisal.skill'].create(values)
                 created_skills.append(new_skill)
                 _logger.info("Created appraisal skill: %s (Type: %s, Skill Level: %s, Bobot Nilai: %d%%)",
-                             skill.name, skill.skill_type_id.name, default_level.name, bobot_nilai)
+                             skill.name, skill.skill_type_id.name, "Kosong", bobot_nilai)
         
         if created_skills:
             return {
