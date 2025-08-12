@@ -8,6 +8,17 @@ class HrAppraisalSkill(models.Model):
     _inherit = 'hr.appraisal.skill'
     
     sequence = fields.Integer(string='Sequence', default=10)
+    
+    # Override field skill_level_id untuk membuat required=False
+    skill_level_id = fields.Many2one(
+        'hr.skill.level',
+        compute='_compute_skill_level_id',
+        domain="[('skill_type_id', '=', skill_type_id)]",
+        store=True,
+        readonly=False,
+        required=False  # Ubah dari True menjadi False
+    )
+    
     bobot_penilaian = fields.Integer(
         string='Bobot Penilaian',
         related='skill_type_id.bobot_nilai',
@@ -41,6 +52,17 @@ class HrAppraisalSkill(models.Model):
                 record.bobot_penilaian_percentage = "0%"
     
     _order = "sequence, id"
+
+    # Override compute method untuk handle optional skill_level_id
+    @api.depends('skill_id')
+    def _compute_skill_level_id(self):
+        """Override compute method untuk handle optional skill_level_id"""
+        for record in self:
+            if not record.skill_id:
+                record.skill_level_id = False
+            else:
+                skill_levels = record.skill_type_id.skill_level_ids
+                record.skill_level_id = skill_levels.filtered('default_level') or skill_levels[0] if skill_levels else False
 
 class HrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
