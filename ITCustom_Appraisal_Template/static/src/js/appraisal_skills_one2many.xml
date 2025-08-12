@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="ITCustom_Appraisal_Template.AppraisalSkillsListRenderer" t-inherit="hr_appraisal_skills.AppraisalSkillsListRenderer" t-inherit-mode="extension">
+        <!-- Hide the Add new skills button by modifying its condition -->
+        <xpath expr="//button[@role='button' and @class='btn btn-secondary btn-sm ms-3 mt-2']" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+    </t>
+</templates>

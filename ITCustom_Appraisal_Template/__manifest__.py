@@ -16,6 +16,11 @@
         'views/hr_appraisal_inherit.xml',
         'views/hr_appraisal_skill_inherit.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'ITCustom_Appraisal_Template/static/src/js/appraisal_skills_one2many.xml',
+        ],
+    },
     'installable': True,
     'application': False,
 }
