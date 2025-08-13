@@ -14,8 +14,6 @@
     'assets': {
         'web.assets_backend': [
             'ITCustom_HideSkillsAddButton/static/src/scss/hide_skills_add_button.scss',
-            'ITCustom_HideSkillsAddButton/static/src/fields/skills_one2many/skills_one2many.js',
-            'ITCustom_HideSkillsAddButton/static/src/fields/skills_one2many/skills_one2many.xml',
         ],
     },
     'installable': True,
