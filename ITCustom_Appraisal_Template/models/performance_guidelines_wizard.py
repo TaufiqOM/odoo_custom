@@ -130,11 +130,11 @@ class PerformanceGuidelinesWizard(models.TransientModel):
                 <tr>
                     <th>{header_text}</th>
                     <th>Definisi</th>
-                    <th>NILAI 1<br/>(Kurang Diterima)</th>
-                    <th>NILAI 2<br/>(Butuh Arahan)</th>
-                    <th>NILAI 3<br/>(Standart)</th>
-                    <th>NILAI 4<br/>(Performa Bagus)</th>
-                    <th>NILAI 5<br/>(Luar Biasa)</th>
+                    <th>NILAI 20%<br/>(Kurang Diterima)</th>
+                    <th>NILAI 40%<br/>(Butuh Arahan)</th>
+                    <th>NILAI 60%<br/>(Standart)</th>
+                    <th>NILAI 80%<br/>(Performa Bagus)</th>
+                    <th>NILAI 100%<br/>(Luar Biasa)</th>
                 </tr>
             </thead>
             <tbody>

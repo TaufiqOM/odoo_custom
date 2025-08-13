@@ -29,11 +29,11 @@
                                         <field name="sequence" widget="handle"/>
                                         <field name="factor" string="Faktor Perilaku Kerja"/>
                                         <field name="definition" string="Definisi"/>
-                                        <field name="value_1" string="NILAI 1 (Kurang Diterima)"/>
-                                        <field name="value_2" string="NILAI 2 (Butuh Arahan)"/>
-                                        <field name="value_3" string="NILAI 3 (Standart)"/>
-                                        <field name="value_4" string="NILAI 4 (Performa Bagus)"/>
-                                        <field name="value_5" string="NILAI 5 (Luar Biasa)"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
                                     </list>
                                 </field>
                             </group>
@@ -45,11 +45,11 @@
                                         <field name="sequence" widget="handle"/>
                                         <field name="factor" string="Faktor Perilaku Kerja"/>
                                         <field name="definition" string="Definisi"/>
-                                        <field name="value_1" string="NILAI 1 (Kurang Diterima)"/>
-                                        <field name="value_2" string="NILAI 2 (Butuh Arahan)"/>
-                                        <field name="value_3" string="NILAI 3 (Standart)"/>
-                                        <field name="value_4" string="NILAI 4 (Performa Bagus)"/>
-                                        <field name="value_5" string="NILAI 5 (Luar Biasa)"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
                                     </list>
                                 </field>
                             </group>
@@ -61,11 +61,11 @@
                                         <field name="sequence" widget="handle"/>
                                         <field name="factor" string="Faktor Perilaku Kerja"/>
                                         <field name="definition" string="Definisi"/>
-                                        <field name="value_1" string="NILAI 1 (Kurang Diterima)"/>
-                                        <field name="value_2" string="NILAI 2 (Butuh Arahan)"/>
-                                        <field name="value_3" string="NILAI 3 (Standart)"/>
-                                        <field name="value_4" string="NILAI 4 (Performa Bagus)"/>
-                                        <field name="value_5" string="NILAI 5 (Luar Biasa)"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
                                     </list>
                                 </field>
                             </group>
