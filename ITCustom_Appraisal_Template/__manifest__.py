@@ -18,7 +18,6 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'ITCustom_Appraisal_Template/static/src/js/appraisal_skills_one2many.xml',
         ],
     },
     'installable': True,
