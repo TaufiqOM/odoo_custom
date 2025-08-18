@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report template for PDF generation -->
+    <template id="report_hr_appraisal_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h5>PENILAIAN KINERJA PT. OMEGA MAS</h5>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <p><strong>Nama:</strong> <span t-field="o.employee_id.name"/></p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Departemen:</strong> <span t-field="o.employee_id.department_id.name"/></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>Tanggal Appraisal:</strong> <span t-field="o.date_close"/></p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Tanggal Appraisal Selanjutnya:</strong> <span t-field="o.next_appraisal_date"/></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <p><strong>Nilai:</strong> <span t-field="o.assessment_note"/></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

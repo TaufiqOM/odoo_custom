@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-from odoo import models, api
+from odoo import models
 
 class HrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
-
-    def action_export_laporan(self):
-        """
-        Fungsi untuk tombol Export Laporan
-        Saat ini kosong tanpa fungsi
-        """
-        pass
+    
+    # Removed the export functionality as we're now using Print
+    pass
