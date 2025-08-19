@@ -76,8 +76,8 @@
                                                 
                                                 <t t-foreach="skills_list" t-as="skill">
                                                     <tr>
-                                                        <td class="text-center"><t t-esc="global_row_index + 1"/></td>
                                                         <t t-if="skill_index == 0">
+                                                            <td class="text-center" t-att-rowspan="skill_count"><t t-esc="global_row_index + 1"/></td>
                                                             <td t-att-rowspan="skill_count"><span t-esc="skill_type_name"/></td>
                                                         </t>
                                                         <td><span t-field="skill.skill_id.name"/></td>
@@ -86,7 +86,9 @@
                                                         <td class="text-center">-</td>
                                                         <td class="text-center">-</td>
                                                     </tr>
-                                                    <t t-set="global_row_index" t-value="global_row_index + 1"/>
+                                                    <t t-if="skill_index == 0">
+                                                        <t t-set="global_row_index" t-value="global_row_index + skill_count"/>
+                                                    </t>
                                                 </t>
                                             </t>
                                         </t>
