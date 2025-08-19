@@ -51,6 +51,7 @@
                                             <th class="text-center" style="width: 15%; font-size: 9px;">Rata-rata</th>
                                             <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL</th>
                                             <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 2</th>
+                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 3</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -124,6 +125,22 @@
                                             <t t-set="global_row_index" t-value="0"/>
                                             <t t-set="processed_bobot_totals" t-value="{}"/>
                                             <t t-set="processed_bobot_totals2" t-value="{}"/>
+                                            <t t-set="total3_sum" t-value="0"/>
+                                            <t t-set="total_rows" t-value="0"/>
+                                            
+                                            <!-- Calculate total rows and TOTAL 3 sum -->
+                                            <t t-foreach="grouped_skills.items()" t-as="group">
+                                                <t t-set="total_rows" t-value="total_rows + len(group[1])"/>
+                                            </t>
+                                            
+                                            <!-- Calculate TOTAL 3 sum -->
+                                            <t t-foreach="bobot_totals.items()" t-as="bobot_total">
+                                                <t t-set="bobot_key" t-value="bobot_total[0]"/>
+                                                <t t-set="total_value" t-value="bobot_total[1]"/>
+                                                <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/>
+                                                <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/>
+                                                <t t-set="total3_sum" t-value="total3_sum + (total_value * bobot_decimal)"/>
+                                            </t>
                                             
                                             <t t-foreach="grouped_skills.items()" t-as="group">
                                                 <t t-set="skill_type_name" t-value="group[0]"/>
@@ -162,6 +179,11 @@
                                                             <t t-set="total2_value" t-value="round(total_value * bobot_decimal, 2)"/>
                                                             <td class="text-center" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total2_value"/></td>
                                                             <t t-set="processed_bobot_totals2" t-value="dict(processed_bobot_totals2, **{bobot_key: True})"/>
+                                                        </t>
+
+                                                        <!-- TOTAL 3 column - only show once -->
+                                                        <t t-if="skill_index == 0 and skill_type_name == list(grouped_skills.keys())[0]">
+                                                            <td class="text-center" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum, 2)"/></strong></td>
                                                         </t>
                                                     </tr>
                                                     <t t-set="global_row_index" t-value="global_row_index + 1"/>
