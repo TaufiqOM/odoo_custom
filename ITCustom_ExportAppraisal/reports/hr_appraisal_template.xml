@@ -54,16 +54,40 @@
                                     </thead>
                                     <tbody>
                                         <t t-if="o.skill_ids">
+                                            <t t-set="grouped_skills" t-value="{}"/>
+                                            
+                                            <!-- Group skills by skill type -->
                                             <t t-foreach="o.skill_ids" t-as="skill">
-                                                <tr>
-                                                    <td class="text-center"><t t-esc="skill_index + 1"/></td>
-                                                    <td><span t-field="skill.skill_type_id.name"/></td>
-                                                    <td><span t-field="skill.skill_id.name"/></td>
-                                                    <td><span t-field="skill.skill_level_id.name"/></td>
-                                                    <td class="text-center">-</td>
-                                                    <td class="text-center">-</td>
-                                                    <td class="text-center">-</td>
-                                                </tr>
+                                                <t t-set="skill_type" t-value="skill.skill_type_id.name"/>
+                                                <t t-if="skill_type in grouped_skills">
+                                                    <t t-set="grouped_skills" t-value="dict(grouped_skills, **{skill_type: grouped_skills[skill_type] + [skill]})"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="grouped_skills" t-value="dict(grouped_skills, **{skill_type: [skill]})"/>
+                                                </t>
+                                            </t>
+                                            
+                                            <!-- Render grouped skills -->
+                                            <t t-set="global_row_index" t-value="0"/>
+                                            <t t-foreach="grouped_skills.items()" t-as="group">
+                                                <t t-set="skill_type_name" t-value="group[0]"/>
+                                                <t t-set="skills_list" t-value="group[1]"/>
+                                                <t t-set="skill_count" t-value="len(skills_list)"/>
+                                                
+                                                <t t-foreach="skills_list" t-as="skill">
+                                                    <tr>
+                                                        <td class="text-center"><t t-esc="global_row_index + 1"/></td>
+                                                        <t t-if="skill_index == 0">
+                                                            <td t-att-rowspan="skill_count"><span t-esc="skill_type_name"/></td>
+                                                        </t>
+                                                        <td><span t-field="skill.skill_id.name"/></td>
+                                                        <td><span t-field="skill.skill_level_id.name"/></td>
+                                                        <td class="text-center">-</td>
+                                                        <td class="text-center">-</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                    <t t-set="global_row_index" t-value="global_row_index + 1"/>
+                                                </t>
                                             </t>
                                         </t>
                                         <t t-else="">
