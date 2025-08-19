@@ -43,16 +43,16 @@
                                 <table class="table table-bordered" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" style="width: 5%; font-size: 9px;">No</th>
-                                            <th class="text-center" style="width: 8%; font-size: 9px;">Bobot (%)</th>
-                                            <th class="text-center" style="width: 18%; font-size: 9px;">Tipe Keahlian</th>
-                                            <th class="text-center" style="width: 22%; font-size: 9px;">Keahlian</th>
-                                            <th class="text-center" style="width: 15%; font-size: 9px;">Value</th>
-                                            <th class="text-center" style="width: 15%; font-size: 9px;">Rata-rata</th>
-                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL</th>
-                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 2</th>
-                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 3</th>
-                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 4</th>
+                                            <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
+                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">Bobot (%)</th>
+                                            <th class="text-center align-middle" style="width: 18%; font-size: 9px;">Tipe Keahlian</th>
+                                            <th class="text-center align-middle" style="width: 22%; font-size: 9px;">Keahlian</th>
+                                            <th class="text-center align-middle" style="width: 15%; font-size: 9px;">Value</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Rata-rata</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL 2</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL 3</th>
+                                            <th class="text-center align-middle" style="width: 15%; font-size: 9px;">SKORE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -155,21 +155,21 @@
                                                 <t t-foreach="skills_list" t-as="skill">
                                                     <tr>
                                                         <t t-if="skill_index == 0">
-                                                            <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="global_row_index + 1"/></td>
-                                                            <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="skill.bobot_penilaian_percentage"/></td>
-                                                            <td t-att-rowspan="skill_count" style="font-size: 9px;"><span t-esc="skill_type_name"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="global_row_index + 1"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="skill.bobot_penilaian_percentage"/></td>
+                                                            <td class="align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><span t-esc="skill_type_name"/></td>
                                                         </t>
-                                                        <td style="font-size: 9px;"><span t-field="skill.skill_id.name"/></td>
-                                                        <td class="text-center" style="font-size: 9px;">
+                                                        <td class="align-middle" style="font-size: 9px;"><span t-field="skill.skill_id.name"/></td>
+                                                        <td class="text-center align-middle" style="font-size: 9px;">
                                                             <t t-esc="int(skill.skill_level_id.level_progress / 20) if skill.skill_level_id.level_progress else 0"/>
                                                         </td>
                                                         <t t-if="skill_index == 0">
-                                                            <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="average_value"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="average_value"/></td>
                                                         </t>
                                                         
                                                         <!-- TOTAL column - merged by bobot percentage -->
                                                         <t t-if="bobot_key not in processed_bobot_totals">
-                                                            <td class="text-center" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total_value"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total_value"/></td>
                                                             <t t-set="processed_bobot_totals" t-value="dict(processed_bobot_totals, **{bobot_key: True})"/>
                                                         </t>
                                                         
@@ -178,18 +178,18 @@
                                                             <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/>
                                                             <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/>
                                                             <t t-set="total2_value" t-value="round(total_value * bobot_decimal, 2)"/>
-                                                            <td class="text-center" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total2_value"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total2_value"/></td>
                                                             <t t-set="processed_bobot_totals2" t-value="dict(processed_bobot_totals2, **{bobot_key: True})"/>
                                                         </t>
 
                                                         <!-- TOTAL 3 column - only show once -->
                                                         <t t-if="skill_index == 0 and skill_type_name == list(grouped_skills.keys())[0]">
-                                                            <td class="text-center" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum, 2)"/></strong></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum, 2)"/></strong></td>
                                                         </t>
                                                         
                                                         <!-- TOTAL 4 column - only show once (TOTAL 3 * 20) -->
                                                         <t t-if="skill_index == 0 and skill_type_name == list(grouped_skills.keys())[0]">
-                                                            <td class="text-center" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum * 20, 2)"/></strong></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum * 20, 2)"/></strong></td>
                                                         </t>
                                                     </tr>
                                                     <t t-set="global_row_index" t-value="global_row_index + 1"/>
