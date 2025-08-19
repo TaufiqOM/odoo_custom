@@ -52,6 +52,7 @@
                                             <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL</th>
                                             <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 2</th>
                                             <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 3</th>
+                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL 4</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,6 +185,11 @@
                                                         <!-- TOTAL 3 column - only show once -->
                                                         <t t-if="skill_index == 0 and skill_type_name == list(grouped_skills.keys())[0]">
                                                             <td class="text-center" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum, 2)"/></strong></td>
+                                                        </t>
+                                                        
+                                                        <!-- TOTAL 4 column - only show once (TOTAL 3 * 20) -->
+                                                        <t t-if="skill_index == 0 and skill_type_name == list(grouped_skills.keys())[0]">
+                                                            <td class="text-center" t-att-rowspan="total_rows" style="font-size: 9px;"><strong><t t-esc="round(total3_sum * 20, 2)"/></strong></td>
                                                         </t>
                                                     </tr>
                                                     <t t-set="global_row_index" t-value="global_row_index + 1"/>
