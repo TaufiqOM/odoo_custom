@@ -36,203 +36,41 @@
                             </div>
                         </div>
                         
+                        <!-- New Skills Table -->
                         <div class="row mt-4">
                             <div class="col-12">
+                                <h5 class="mb-3">DATA KEAHLIAN (SKILLS)</h5>
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th class="text-center" style="width: 5%">No</th>
-                                            <th class="text-center" colspan="2" style="width: 35%">Uraian</th>
-                                            <th class="text-center" style="width: 10%">Nilai</th>
-                                            <th class="text-center" style="width: 10%">Rata-rata</th>
-                                            <th class="text-center" style="width: 10%">Total</th>
-                                            <th class="text-center" style="width: 15%">Total 1&amp;2</th>
-                                            <th class="text-center" style="width: 15%">Skore</th>
+                                            <th class="text-center" style="width: 20%">Tipe Keahlian</th>
+                                            <th class="text-center" style="width: 25%">Keahlian</th>
+                                            <th class="text-center" style="width: 15%">Level</th>
+                                            <th class="text-center" style="width: 15%">Dummy 1</th>
+                                            <th class="text-center" style="width: 10%">Dummy 2</th>
+                                            <th class="text-center" style="width: 10%">Dummy 3</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-center" rowspan="4">1</td>
-                                            <td rowspan="4">Kematangan Diri</td>
-                                            <td>Obyektivitas</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="4">3,67</td>
-                                            <td class="text-center" rowspan="4">3</td>
-                                            <td class="text-center" rowspan="4">3</td>
-                                            <td class="text-center" rowspan="4">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pendekatan Masalah</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kemauan untuk belajar</td>
-                                            <td class="text-center">4</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>11</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="3">2</td>
-                                            <td rowspan="3">Kualitas Pekerjaan</td>
-                                            <td>Ketelitian</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="3">3,33</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Konsistensi</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>7</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td rowspan="2">Ketepatan Waktu</td>
-                                            <td>Punctuality</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="2">3,5</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>7</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td rowspan="2">Inisiatif</td>
-                                            <td>Proaktif</td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-center" rowspan="2">3,5</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>7</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="3">5</td>
-                                            <td rowspan="3">Kerjasama Tim</td>
-                                            <td>Kolaborasi</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="3">3,67</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Support</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>11</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">6</td>
-                                            <td rowspan="2">Komunikasi</td>
-                                            <td>Clarity</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="2">3,5</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>7</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">7</td>
-                                            <td rowspan="2">Kehadiran</td>
-                                            <td>Attendance Rate</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>8</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">8</td>
-                                            <td rowspan="2">Disiplin</td>
-                                            <td>Rule Compliance</td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>6</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="3">9</td>
-                                            <td rowspan="3">Tanggung Jawab</td>
-                                            <td>Accountability</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="3">3,67</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                            <td class="text-center" rowspan="3">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ownership</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>11</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">10</td>
-                                            <td rowspan="2">Kreativitas</td>
-                                            <td>Innovation</td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                            <td class="text-center" rowspan="2">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>6</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" rowspan="2">11</td>
-                                            <td rowspan="2">Kepemimpinan</td>
-                                            <td>Leadership</td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                            <td class="text-center" rowspan="2">4</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-center"><strong>8</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center" colspan="3"><strong>TOTAL KESELURUHAN</strong></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"><strong>36</strong></td>
-                                        </tr>
+                                        <t t-if="o.skill_ids">
+                                            <t t-foreach="o.skill_ids" t-as="skill">
+                                                <tr>
+                                                    <td class="text-center"><t t-esc="skill_index + 1"/></td>
+                                                    <td><span t-field="skill.skill_type_id.name"/></td>
+                                                    <td><span t-field="skill.skill_id.name"/></td>
+                                                    <td><span t-field="skill.skill_level_id.name"/></td>
+                                                    <td class="text-center">-</td>
+                                                    <td class="text-center">-</td>
+                                                    <td class="text-center">-</td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <tr>
+                                                <td colspan="7" class="text-center">Tidak ada data keahlian</td>
+                                            </tr>
+                                        </t>
                                     </tbody>
                                 </table>
                             </div>
