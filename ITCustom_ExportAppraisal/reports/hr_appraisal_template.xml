@@ -49,7 +49,7 @@
                                             <th class="text-center" style="width: 22%; font-size: 9px;">Keahlian</th>
                                             <th class="text-center" style="width: 15%; font-size: 9px;">Value</th>
                                             <th class="text-center" style="width: 15%; font-size: 9px;">Rata-rata</th>
-                                            <th class="text-center" style="width: 10%; font-size: 9px;">Dummy 1</th>
+                                            <th class="text-center" style="width: 10%; font-size: 9px;">TOTAL</th>
                                             <th class="text-center" style="width: 10%; font-size: 9px;">Dummy 2</th>
                                         </tr>
                                     </thead>
@@ -58,12 +58,16 @@
                                             <t t-set="grouped_skills" t-value="{}"/>
                                             <t t-set="skill_totals" t-value="{}"/>
                                             <t t-set="skill_counts" t-value="{}"/>
+                                            <t t-set="bobot_totals" t-value="{}"/>
+                                            <t t-set="bobot_groups" t-value="{}"/>
                                             
-                                            <!-- Group skills by skill type and calculate totals -->
+                                            <!-- Group skills by skill type and bobot -->
                                             <t t-foreach="o.skill_ids" t-as="skill">
                                                 <t t-set="skill_type" t-value="skill.skill_type_id.name"/>
+                                                <t t-set="bobot_key" t-value="skill.bobot_penilaian_percentage"/>
                                                 <t t-set="skill_value" t-value="int(skill.skill_level_id.level_progress / 20) if skill.skill_level_id.level_progress else 0"/>
                                                 
+                                                <!-- Group by skill type for display -->
                                                 <t t-if="skill_type in grouped_skills">
                                                     <t t-set="grouped_skills" t-value="dict(grouped_skills, **{skill_type: grouped_skills[skill_type] + [skill]})"/>
                                                     <t t-set="skill_totals" t-value="dict(skill_totals, **{skill_type: skill_totals[skill_type] + skill_value})"/>
@@ -74,16 +78,60 @@
                                                     <t t-set="skill_totals" t-value="dict(skill_totals, **{skill_type: skill_value})"/>
                                                     <t t-set="skill_counts" t-value="dict(skill_counts, **{skill_type: 1})"/>
                                                 </t>
+                                                
+                                                <!-- Group by bobot for TOTAL calculation -->
+                                                <t t-if="bobot_key in bobot_groups">
+                                                    <t t-set="bobot_groups" t-value="dict(bobot_groups, **{bobot_key: bobot_groups[bobot_key] + [skill]})"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="bobot_groups" t-value="dict(bobot_groups, **{bobot_key: [skill]})"/>
+                                                </t>
                                             </t>
                                             
-                                            <!-- Render grouped skills with averages -->
+                                            <!-- Calculate bobot-wise averages and totals -->
+                                            <t t-foreach="bobot_groups.items()" t-as="bobot_group">
+                                                <t t-set="bobot_key" t-value="bobot_group[0]"/>
+                                                <t t-set="skills_in_bobot" t-value="bobot_group[1]"/>
+                                                <t t-set="total_value" t-value="0"/>
+                                                <t t-set="total_count" t-value="0"/>
+                                                
+                                                <t t-foreach="skills_in_bobot" t-as="skill_in_bobot">
+                                                    <t t-set="skill_value" t-value="int(skill_in_bobot.skill_level_id.level_progress / 20) if skill_in_bobot.skill_level_id.level_progress else 0"/>
+                                                    <t t-set="total_value" t-value="total_value + skill_value"/>
+                                                    <t t-set="total_count" t-value="total_count + 1"/>
+                                                </t>
+                                                
+                                                <t t-set="average_value" t-value="round(total_value / total_count, 2)"/>
+                                                <t t-set="bobot_totals" t-value="dict(bobot_totals, **{bobot_key: average_value})"/>
+                                            </t>
+                                            
+                                            <!-- Calculate row counts for bobot groups -->
+                                            <t t-set="bobot_row_counts" t-value="{}"/>
+                                            <t t-foreach="grouped_skills.items()" t-as="group">
+                                                <t t-set="skill_type_name" t-value="group[0]"/>
+                                                <t t-set="skills_list" t-value="group[1]"/>
+                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
+                                                
+                                                <t t-if="bobot_key in bobot_row_counts">
+                                                    <t t-set="bobot_row_counts" t-value="dict(bobot_row_counts, **{bobot_key: bobot_row_counts[bobot_key] + len(skills_list)})"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="bobot_row_counts" t-value="dict(bobot_row_counts, **{bobot_key: len(skills_list)})"/>
+                                                </t>
+                                            </t>
+                                            
+                                            <!-- Render grouped skills with bobot-based TOTAL merging -->
                                             <t t-set="global_row_index" t-value="0"/>
+                                            <t t-set="processed_bobot_totals" t-value="{}"/>
+                                            
                                             <t t-foreach="grouped_skills.items()" t-as="group">
                                                 <t t-set="skill_type_name" t-value="group[0]"/>
                                                 <t t-set="skills_list" t-value="group[1]"/>
                                                 <t t-set="skill_count" t-value="len(skills_list)"/>
                                                 <t t-set="total_value" t-value="skill_totals[skill_type_name]"/>
                                                 <t t-set="average_value" t-value="round(total_value / skill_count, 2)"/>
+                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
+                                                <t t-set="total_value" t-value="bobot_totals[bobot_key]"/>
                                                 
                                                 <t t-foreach="skills_list" t-as="skill">
                                                     <tr>
@@ -98,29 +146,27 @@
                                                         </td>
                                                         <t t-if="skill_index == 0">
                                                             <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="average_value"/></td>
-                                                            <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;">-</td>
-                                                            <td class="text-center" t-att-rowspan="skill_count" style="font-size: 9px;">-</td>
                                                         </t>
+                                                        
+                                                        <!-- TOTAL column - merged by bobot percentage -->
+                                                        <t t-if="bobot_key not in processed_bobot_totals">
+                                                            <td class="text-center" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="total_value"/></td>
+                                                            <t t-set="processed_bobot_totals" t-value="dict(processed_bobot_totals, **{bobot_key: True})"/>
+                                                        </t>
+                                                        
+                                                        <td class="text-center" style="font-size: 9px;">-</td>
                                                     </tr>
-                                                    <t t-if="skill_index == 0">
-                                                        <t t-set="global_row_index" t-value="global_row_index + skill_count"/>
-                                                    </t>
+                                                    <t t-set="global_row_index" t-value="global_row_index + 1"/>
                                                 </t>
                                             </t>
                                         </t>
                                         <t t-else="">
                                             <tr>
-                                                <td colspan="8" class="text-center" style="font-size: 9px;">Tidak ada data keahlian</td>
+                                                <td colspan="8" class="text-center" style="font-size: 9px;">No skills data available</td>
                                             </tr>
                                         </t>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <hr/>
                             </div>
                         </div>
                     </div>
