@@ -35,8 +35,7 @@
                         <!-- New Skills Table -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <h5 class="mb-2" style="font-size: 12px;">DATA KEAHLIAN (SKILLS)</h5>
-                                <table class="table table-bordered" style="font-size: 9px;">
+                                <table class="table table-bordered table-sm" style="font-size: 9px; margin-bottom: 0;">
                                     <thead>
                                         <tr>
                                             <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
