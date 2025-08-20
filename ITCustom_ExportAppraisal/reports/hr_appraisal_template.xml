@@ -120,6 +120,10 @@
                                                 <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/>
                                                 <t t-set="total3_sum" t-value="total3_sum + (total_value * bobot_decimal)"/>
                                             </t>
+                                            
+                                            <!-- Track which bobot values have been processed -->
+                                            <t t-set="processed_bobot_values" t-value="{}"/>
+                                            
                                             <t t-foreach="grouped_skills.items()" t-as="group">
                                                 <t t-set="skill_type_name" t-value="group[0]"/>
                                                 <t t-set="skills_list" t-value="group[1]"/>
@@ -128,11 +132,20 @@
                                                 <t t-set="average_value" t-value="round(total_value / skill_count, 2)"/>
                                                 <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
                                                 <t t-set="total_value" t-value="bobot_totals[bobot_key]"/>
+                                                
                                                 <t t-foreach="skills_list" t-as="skill">
                                                     <tr>
                                                         <t t-if="skill_index == 0">
                                                             <td class="text-center align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="global_row_index + 1"/></td>
-                                                            <td class="text-center align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><t t-esc="skill.bobot_penilaian_percentage"/></td>
+                                                        </t>
+                                                        
+                                                        <!-- BOBOT column - merge rows for same weight -->
+                                                        <t t-if="bobot_key not in processed_bobot_values">
+                                                            <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="skill.bobot_penilaian_percentage"/></td>
+                                                            <t t-set="processed_bobot_values" t-value="dict(processed_bobot_values, **{bobot_key: True})"/>
+                                                        </t>
+                                                        
+                                                        <t t-if="skill_index == 0">
                                                             <td class="align-middle" t-att-rowspan="skill_count" style="font-size: 9px;"><span t-esc="skill_type_name"/></td>
                                                         </t>
                                                         <td class="align-middle" style="font-size: 9px;"><span t-field="skill.skill_id.name"/></td>
