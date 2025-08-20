@@ -50,8 +50,8 @@
                                             <th class="text-center align-middle" style="width: 15%; font-size: 9px;">Value</th>
                                             <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Rata-rata</th>
                                             <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL 2</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL 3</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL x Bobot</th>
+                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Total 1 &amp; 2</th>
                                             <th class="text-center align-middle" style="width: 15%; font-size: 9px;">SKORE</th>
                                         </tr>
                                     </thead>
