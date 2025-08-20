@@ -182,6 +182,33 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Tanda Tangan -->
+                        <div class="row mt-4">
+                            <div class="col-6 text-center">
+                                <p style="font-size: 11px;">Pasuruan, <span t-field="o.date_close"/></p>
+                                <p style="font-size: 11px;"><strong>Atasan Langsung</strong></p>
+                                <br/><br/><br/>
+                                <p style="font-size: 11px; margin-top: 30px;">
+                                    <strong>
+                                        <t t-if="o.manager_ids">
+                                            <t t-foreach="o.manager_ids" t-as="manager">
+                                                <span t-field="manager.name"/>
+                                            </t>
+                                        </t>
+                                        <t t-else="">[Nama Manager]</t>
+                                    </strong>
+                                </p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <p style="font-size: 11px;">&#160;</p>
+                                <p style="font-size: 11px;"><strong>HRD &amp; GA Spi</strong></p>
+                                <br/><br/><br/>
+                                <p style="font-size: 11px; margin-top: 30px;">
+                                    <strong>Kholilah</strong>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </t>
             </t>
