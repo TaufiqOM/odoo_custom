@@ -205,6 +205,16 @@
                                 </table>
                             </div>
                         </div>
+                        
+                        <!-- Kesimpulan atasan langsung -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h5 class="mb-3" style="font-size: 12px;">KESIMPULAN ATASAN LANGSUNG</h5>
+                                <div class="border p-3" style="font-size: 11px; min-height: 100px;">
+                                    <span t-field="o.assessment_note"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </t>
             </t>
