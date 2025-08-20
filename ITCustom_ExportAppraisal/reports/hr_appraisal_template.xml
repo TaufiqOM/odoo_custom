@@ -40,6 +40,7 @@
                                         <tr>
                                             <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
                                             <th class="text-center align-middle" style="width: 8%; font-size: 9px;">Bobot (%)</th>
+                                                        <th class="text-center align-middle" style="width: 8%; font-size: 9px;">PENILAIAN</th>
                                             <th class="text-center align-middle" style="width: 40%; font-size: 9px;" colspan="2">URAIAN</th>
                                             <th class="text-center align-middle" style="width: 15%; font-size: 9px;">Nilai</th>
                                             <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Rata-rata</th>
@@ -142,6 +143,10 @@
                                                         <!-- BOBOT column - merge rows for same weight -->
                                                         <t t-if="bobot_key not in processed_bobot_values">
                                                             <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;"><t t-esc="skill.bobot_penilaian_percentage"/></td>
+                                                            <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;">
+                                                                <t t-if="skill.bobot_penilaian_percentage == '60%'">Hasil Kerja</t>
+                                                                <t t-if="skill.bobot_penilaian_percentage == '40%'">Perilaku Kerja</t>
+                                                            </td>
                                                             <t t-set="processed_bobot_values" t-value="dict(processed_bobot_values, **{bobot_key: True})"/>
                                                         </t>
                                                         
