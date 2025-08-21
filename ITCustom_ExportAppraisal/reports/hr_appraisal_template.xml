@@ -40,14 +40,14 @@
                                         <tr>
                                             <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
                                             <th class="text-center align-middle" style="width: 8%; font-size: 9px;">Bobot (%)</th>
-                                                        <th class="text-center align-middle" style="width: 8%; font-size: 9px;">PENILAIAN</th>
+                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">PENILAIAN</th>
                                             <th class="text-center align-middle" style="width: 40%; font-size: 9px;" colspan="2">URAIAN</th>
-                                            <th class="text-center align-middle" style="width: 15%; font-size: 9px;">Nilai</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Rata-rata</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">TOTAL x Bobot</th>
-                                            <th class="text-center align-middle" style="width: 10%; font-size: 9px;">Total 1 &amp; 2</th>
-                                            <th class="text-center align-middle" style="width: 15%; font-size: 9px;">SKORE</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Nilai</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Rata-rata</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL x Bobot</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Total 1 &amp; 2</th>
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">SKOR</th>
                                         </tr>
                                     </thead>
                                     <tbody>
