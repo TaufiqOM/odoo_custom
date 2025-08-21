@@ -46,14 +46,6 @@
                                                 <span t-field="o.date_close"/>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <strong>Tanggal Appraisal Selanjutnya</strong>
-                                            </td>
-                                            <td colspan="3">
-                                                <span t-field="o.next_appraisal_date"/>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -262,9 +254,9 @@
                         <!-- Catatan atasan langsung -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <h5 class="mb-2" style="font-size: 12px;">Catatan Atasan Langsung :</h5>
                                 <div class="border p-2" style="font-size: 11px; min-height: 30px;">
                                     <strong>
+                                        <h5 class="mb-2" style="font-size: 12px;">Catatan Atasan Langsung :</h5>
                                         <span t-field="o.note"/>
                                     </strong>
                                 </div>
