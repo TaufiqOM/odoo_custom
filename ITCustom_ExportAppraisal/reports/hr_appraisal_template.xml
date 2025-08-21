@@ -259,13 +259,13 @@
                                 </strong>
                             </div>
                         </div>
-                        <!-- Keterangan atasan langsung -->
+                        <!-- Catatan atasan langsung -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <h5 class="mb-2" style="font-size: 12px;">Keterangan Atasan Langsung :</h5>
+                                <h5 class="mb-2" style="font-size: 12px;">Catatan Atasan Langsung :</h5>
                                 <div class="border p-2" style="font-size: 11px; min-height: 30px;">
                                     <strong>
-                                        <span t-field="o.assessment_note"/>
+                                        <span t-field="o.note"/>
                                     </strong>
                                 </div>
                             </div>
