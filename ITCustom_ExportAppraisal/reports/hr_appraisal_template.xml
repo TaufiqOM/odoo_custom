@@ -16,7 +16,7 @@
                         <!-- Employee Info -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <table class="table table-sm table-bordered no-outer-border" style="font-size: 11px; width: 100%; margin-bottom: 0;">
+                                <table class="table table-sm" style="font-size: 11px; width: 100%; margin-bottom: 0; border-collapse: collapse; border: 1px solid transparent;">
                                     <tbody>
                                         <tr>
                                             <td style="width: 25%;">
@@ -61,7 +61,7 @@
                         <!-- New Skills Table -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <table class="table table-bordered table-sm" style="font-size: 9px; margin-bottom: 0;">
+                                <table class="table table-sm" style="font-size: 9px; width: 100%; margin-bottom: 0; border-collapse: collapse; border: 1px solid transparent;">
                                     <thead>
                                         <tr>
                                             <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
