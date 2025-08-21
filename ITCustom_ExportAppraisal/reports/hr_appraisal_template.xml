@@ -13,32 +13,49 @@
                                 </strong>
                             </div>
                         </div>
+                        <!-- Employee Info -->
                         <div class="row mt-2">
-                            <div class="col-6">
-                                <p style="font-size: 11px;">
-                                    <strong>Nama:</strong>
-                                    <span t-field="o.employee_id.name"/>
-                                </p>
-                            </div>
-                            <div class="col-6">
-                                <p style="font-size: 11px;">
-                                    <strong>Departemen:</strong>
-                                    <span t-field="o.employee_id.department_id.name"/>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <p style="font-size: 11px;">
-                                    <strong>Tanggal Appraisal:</strong>
-                                    <span t-field="o.date_close"/>
-                                </p>
-                            </div>
-                            <div class="col-6">
-                                <p style="font-size: 11px;">
-                                    <strong>Tanggal Appraisal Selanjutnya:</strong>
-                                    <span t-field="o.next_appraisal_date"/>
-                                </p>
+                            <div class="col-12">
+                                <table class="table table-sm table-bordered no-outer-border" style="font-size: 11px; width: 100%; margin-bottom: 0;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 25%;">
+                                                <strong>Nama</strong>
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <span t-field="o.employee_id.name"/>
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <strong>NIK</strong>
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <span t-field="o.employee_id.barcode"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Departemen</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.employee_id.department_id.name"/>
+                                            </td>
+                                            <td>
+                                                <strong>Tanggal Appraisal</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.date_close"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tanggal Appraisal Selanjutnya</strong>
+                                            </td>
+                                            <td colspan="3">
+                                                <span t-field="o.next_appraisal_date"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <!-- New Skills Table -->
@@ -220,26 +237,26 @@
                         <!-- Final Score Calculation -->
                         <div class="row mt-3">
                             <div class="col-12">
-                                    <t t-set="final_total" t-value="round(total3_sum, 2)"/>
-                                    <t t-set="category" t-value="''"/>
-                                    <t t-if="final_total >= 4.21">
-                                        <t t-set="category">Sangat Baik</t>
-                                    </t>
-                                    <t t-elif="final_total >= 3.41">
-                                        <t t-set="category">Baik</t>
-                                    </t>
-                                    <t t-elif="final_total >= 2.61">
-                                        <t t-set="category">Cukup</t>
-                                    </t>
-                                    <t t-elif="final_total >= 1.81">
-                                        <t t-set="category">Kurang</t>
-                                    </t>
-                                    <t t-else="">
-                                        <t t-set="category">Kurang Sekali</t>
-                                    </t>
-                                    <strong style="font-size: 12px">Perhitungan Nilai Akhir :
-                                        <span t-esc="category"/>
-                                    </strong>
+                                <t t-set="final_total" t-value="round(total3_sum, 2)"/>
+                                <t t-set="category" t-value="''"/>
+                                <t t-if="final_total >= 4.21">
+                                    <t t-set="category">Sangat Baik</t>
+                                </t>
+                                <t t-elif="final_total >= 3.41">
+                                    <t t-set="category">Baik</t>
+                                </t>
+                                <t t-elif="final_total >= 2.61">
+                                    <t t-set="category">Cukup</t>
+                                </t>
+                                <t t-elif="final_total >= 1.81">
+                                    <t t-set="category">Kurang</t>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="category">Kurang Sekali</t>
+                                </t>
+                                <strong style="font-size: 12px">Perhitungan Nilai Akhir :
+                                    <span t-esc="category"/>
+                                </strong>
                             </div>
                         </div>
                         <!-- Keterangan atasan langsung -->
