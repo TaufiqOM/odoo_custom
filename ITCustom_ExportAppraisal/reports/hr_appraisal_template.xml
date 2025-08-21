@@ -27,11 +27,6 @@
                                 <p style="font-size: 11px;"><strong>Tanggal Appraisal Selanjutnya:</strong> <span t-field="o.next_appraisal_date"/></p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <p style="font-size: 11px;"><strong>Nilai:</strong> <span t-field="o.assessment_note"/></p>
-                            </div>
-                        </div>
                         <!-- New Skills Table -->
                         <div class="row mt-2">
                             <div class="col-12">
@@ -191,10 +186,19 @@
                                 </table>
                             </div>
                         </div>
-                        <!-- Kesimpulan atasan langsung -->
+                        <!-- Keterangan atasan langsung -->
                         <div class="row mt-2">
                             <div class="col-12">
-                                <h5 class="mb-2" style="font-size: 12px;">KESIMPULAN ATASAN LANGSUNG</h5>
+                                <h5 class="mb-2" style="font-size: 12px;">Keterangan ATASAN LANGSUNG</h5>
+                                <div class="border p-2" style="font-size: 11px; min-height: 80px;">
+                                    <span t-field="o.assessment_note"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Nilai Akhir -->
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <h5 class="mb-2" style="font-size: 12px;">NILAI AKHIR</h5>
                                 <div class="border p-2" style="font-size: 11px; min-height: 80px;">
                                     <span t-field="o.assessment_note"/>
                                 </div>
