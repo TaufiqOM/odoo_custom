@@ -195,16 +195,61 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Nilai Akhir -->
-                        <div class="row mt-2">
+                        <!-- Final Score Calculation -->
+                        <div class="row mt-3">
                             <div class="col-12">
-                                <h5 class="mb-2" style="font-size: 12px;">NILAI AKHIR</h5>
-                                <div class="border p-2" style="font-size: 11px; min-height: 80px;">
-                                    <span t-field="o.assessment_note"/>
-                                </div>
+                                <h5 class="mb-2" style="font-size: 12px;">PERHITUNGAN NILAI AKHIR</h5>
+                                <table class="table table-bordered table-sm" style="font-size: 11px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 25%;">TOTAL 1 &amp; 2</th>
+                                            <th class="text-center" style="width: 25%;">SKALA PENILAIAN</th>
+                                            <th class="text-center" style="width: 25%;">NILAI AKHIR</th>
+                                            <th class="text-center" style="width: 25%;">KATEGORI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center align-middle">
+                                                <strong>
+                                                    <t t-set="final_total" t-value="round(total3_sum, 2)"/>
+                                                    <span t-esc="final_total"/>
+                                                </strong>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <strong>1-100</strong>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <strong>
+                                                    <t t-set="final_score" t-value="round(final_total * 20, 2)"/>
+                                                    <span t-esc="final_score"/>
+                                                </strong>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <t t-set="category" t-value="''"/>
+                                                <t t-if="final_total >= 4.21">
+                                                    <t t-set="category">SANGAT BAIK</t>
+                                                </t>
+                                                <t t-elif="final_total >= 3.41">
+                                                    <t t-set="category">BAIK</t>
+                                                </t>
+                                                <t t-elif="final_total >= 2.61">
+                                                    <t t-set="category">CUKUP</t>
+                                                </t>
+                                                <t t-elif="final_total >= 1.81">
+                                                    <t t-set="category">KURANG</t>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="category">KURANG</t>
+                                                </t>
+                                                <strong><span t-esc="category"/></strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        
+
                         <!-- Tanda Tangan -->
                         <div class="row mt-4">
                             <div class="col-6 text-center">
