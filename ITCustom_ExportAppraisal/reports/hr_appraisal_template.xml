@@ -67,31 +67,48 @@
                                     <thead>
                                         <!-- Header Tabel: Mendefinisikan kolom-kolom untuk penilaian keterampilan -->
                                         <tr>
-                                            <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th> <!-- Kolom Nomor: Nomor urut jenis keterampilan -->
-                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">Bobot (%)</th> <!-- Kolom Bobot: Persentase bobot penilaian -->
-                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">PENILAIAN</th> <!-- Kolom Penilaian: Jenis penilaian (Hasil Kerja/Perilaku Kerja) -->
-                                            <th class="text-center align-middle" style="width: 40%; font-size: 9px;" colspan="2">URAIAN</th> <!-- Kolom Uraian: Nama jenis keterampilan dan keterampilan spesifik -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Nilai</th> <!-- Kolom Nilai: Nilai individual untuk setiap keterampilan -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Rata-rata</th> <!-- Kolom Rata-Rata: Rata-rata nilai per jenis keterampilan -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL</th> <!-- Kolom Total: Total nilai rata-rata per bobot -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL x Bobot</th> <!-- Kolom Total x Bobot: Total nilai dikalikan bobot -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Total 1 &amp; 2</th> <!-- Kolom Total 1 & 2: Jumlah total semua bobot -->
-                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">SKOR</th> <!-- Kolom Skor: Skor akhir (Total 1 & 2 dikalikan 20) -->
+                                            <th class="text-center align-middle" style="width: 5%; font-size: 9px;">No</th>
+                                            <!-- Kolom Nomor: Nomor urut jenis keterampilan -->
+                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">Bobot (%)</th>
+                                            <!-- Kolom Bobot: Persentase bobot penilaian -->
+                                            <th class="text-center align-middle" style="width: 8%; font-size: 9px;">PENILAIAN</th>
+                                            <!-- Kolom Penilaian: Jenis penilaian (Hasil Kerja/Perilaku Kerja) -->
+                                            <th class="text-center align-middle" style="width: 40%; font-size: 9px;" colspan="2">URAIAN</th>
+                                            <!-- Kolom Uraian: Nama jenis keterampilan dan keterampilan spesifik -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Nilai</th>
+                                            <!-- Kolom Nilai: Nilai individual untuk setiap keterampilan -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Rata-rata</th>
+                                            <!-- Kolom Rata-Rata: Rata-rata nilai per jenis keterampilan -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL</th>
+                                            <!-- Kolom Total: Total nilai rata-rata per bobot -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">TOTAL x Bobot</th>
+                                            <!-- Kolom Total x Bobot: Total nilai dikalikan bobot -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">Total 1 &amp; 2</th>
+                                            <!-- Kolom Total 1 & 2: Jumlah total semua bobot -->
+                                            <th class="text-center align-middle" style="width: 12%; font-size: 9px;">SKOR</th>
+                                            <!-- Kolom Skor: Skor akhir (Total 1 & 2 dikalikan 20) -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- Pemeriksaan Data: Memastikan ada data keterampilan untuk ditampilkan -->
                                         <t t-if="o.skill_ids">
                                             <!-- Inisialisasi Variabel: Membuat dictionary untuk mengelompokkan keterampilan, total, jumlah, dan bobot -->
-                                            <t t-set="grouped_skills" t-value="{}"/> <!-- Variabel grouped_skills: Menyimpan keterampilan berdasarkan jenis -->
-                                            <t t-set="skill_totals" t-value="{}"/> <!-- Variabel skill_totals: Menyimpan total nilai per jenis keterampilan -->
-                                            <t t-set="skill_counts" t-value="{}"/> <!-- Variabel skill_counts: Menyimpan jumlah keterampilan per jenis -->
-                                            <t t-set="bobot_totals" t-value="{}"/> <!-- Variabel bobot_totals: Menyimpan total rata-rata per bobot -->
-                                            <t t-set="bobot_groups" t-value="{}"/> <!-- Variabel bobot_groups: Mengelompokkan keterampilan berdasarkan bobot -->
+                                            <t t-set="grouped_skills" t-value="{}"/>
+                                            <!-- Variabel grouped_skills: Menyimpan keterampilan berdasarkan jenis -->
+                                            <t t-set="skill_totals" t-value="{}"/>
+                                            <!-- Variabel skill_totals: Menyimpan total nilai per jenis keterampilan -->
+                                            <t t-set="skill_counts" t-value="{}"/>
+                                            <!-- Variabel skill_counts: Menyimpan jumlah keterampilan per jenis -->
+                                            <t t-set="bobot_totals" t-value="{}"/>
+                                            <!-- Variabel bobot_totals: Menyimpan total rata-rata per bobot -->
+                                            <t t-set="bobot_groups" t-value="{}"/>
+                                            <!-- Variabel bobot_groups: Mengelompokkan keterampilan berdasarkan bobot -->
                                             <!-- Pengelompokan Keterampilan: Mengelompokkan keterampilan berdasarkan jenis dan bobot -->
                                             <t t-foreach="o.skill_ids" t-as="skill">
-                                                <t t-set="skill_type" t-value="skill.skill_type_id.name"/> <!-- Variabel skill_type: Nama jenis keterampilan -->
-                                                <t t-set="bobot_key" t-value="skill.bobot_penilaian_percentage"/> <!-- Variabel bobot_key: Persentase bobot penilaian -->
+                                                <t t-set="skill_type" t-value="skill.skill_type_id.name"/>
+                                                <!-- Variabel skill_type: Nama jenis keterampilan -->
+                                                <t t-set="bobot_key" t-value="skill.bobot_penilaian_percentage"/>
+                                                <!-- Variabel bobot_key: Persentase bobot penilaian -->
                                                 <!-- Perhitungan Nilai: Menghitung nilai keterampilan (progress dibagi 20) -->
                                                 <t t-set="skill_value" t-value="int(skill.skill_level_id.level_progress / 20) if skill.skill_level_id.level_progress else 0"/>
                                                 <!-- Update Data: Jika jenis keterampilan sudah ada, tambahkan ke grup -->
@@ -115,27 +132,45 @@
                                                 </t>
                                             </t>
                                             <!-- Perhitungan Rata-Rata per Bobot: Menghitung rata-rata nilai untuk setiap grup bobot -->
-                                            <t t-foreach="bobot_groups.items()" t-as="bobot_group">
-                                                <t t-set="bobot_key" t-value="bobot_group[0]"/> <!-- Variabel bobot_key: Kunci bobot (misal 60%) -->
-                                                <t t-set="skills_in_bobot" t-value="bobot_group[1]"/> <!-- Variabel skills_in_bobot: Daftar keterampilan dalam bobot -->
-                                                <t t-set="total_value" t-value="0"/> <!-- Variabel total_value: Total nilai sementara -->
-                                                <t t-set="total_count" t-value="0"/> <!-- Variabel total_count: Jumlah keterampilan -->
-                                                <t t-foreach="skills_in_bobot" t-as="skill_in_bobot">
-                                                    <!-- Menjumlahkan nilai keterampilan dalam grup bobot -->
-                                                    <t t-set="skill_value" t-value="int(skill_in_bobot.skill_level_id.level_progress / 20) if skill_in_bobot.skill_level_id.level_progress else 0"/>
-                                                    <t t-set="total_value" t-value="total_value + skill_value"/>
-                                                    <t t-set="total_count" t-value="total_count + 1"/>
-                                                </t>
-                                                <!-- Kolom Total: Menghitung rata-rata nilai untuk grup bobot -->
-                                                <t t-set="average_value" t-value="round(total_value / total_count, 2)"/>
-                                                <t t-set="bobot_totals" t-value="dict(bobot_totals, **{bobot_key: average_value})"/>
-                                            </t>
-                                            <!-- Perhitungan Jumlah Baris: Menghitung jumlah baris per grup bobot untuk rowspan -->
-                                            <t t-set="bobot_row_counts" t-value="{}"/> <!-- Variabel bobot_row_counts: Menyimpan jumlah baris per bobot -->
+                                            <!-- VARIABEL BARU UNTUK PERHITUNGAN YANG BENAR -->
+                                            <t t-set="bobot_averages" t-value="{}"/>
+                                            <t t-set="bobot_counts" t-value="{}"/>
+                                            <!-- HITUNG RATA-RATA PER BOBOT DARI NILAI RATA-RATA YANG SUDAH ADA -->
                                             <t t-foreach="grouped_skills.items()" t-as="group">
-                                                <t t-set="skill_type_name" t-value="group[0]"/> <!-- Variabel skill_type_name: Nama jenis keterampilan -->
-                                                <t t-set="skills_list" t-value="group[1]"/> <!-- Variabel skills_list: Daftar keterampilan dalam jenis -->
-                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/> <!-- Variabel bobot_key: Bobot keterampilan -->
+                                                <t t-set="skill_type_name" t-value="group[0]"/>
+                                                <t t-set="skills_list" t-value="group[1]"/>
+                                                <t t-set="total_value" t-value="skill_totals[skill_type_name]"/>
+                                                <t t-set="average_value" t-value="round(total_value / len(skills_list), 2)"/>
+                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
+                                                <!-- AKUMULASI NILAI RATA-RATA PER BOBOT -->
+                                                <t t-if="bobot_key in bobot_averages">
+                                                    <t t-set="bobot_averages" t-value="dict(bobot_averages, **{bobot_key: bobot_averages[bobot_key] + average_value})"/>
+                                                    <t t-set="bobot_counts" t-value="dict(bobot_counts, **{bobot_key: bobot_counts[bobot_key] + 1})"/>
+    </t>
+                                                <t t-else="">
+                                                    <t t-set="bobot_averages" t-value="dict(bobot_averages, **{bobot_key: average_value})"/>
+                                                    <t t-set="bobot_counts" t-value="dict(bobot_counts, **{bobot_key: 1})"/>
+    </t>
+                                            </t>
+                                            <!-- HITUNG RATA-RATA AKHIR PER BOBOT -->
+                                            <t t-set="bobot_totals" t-value="{}"/>
+                                            <t t-foreach="bobot_averages.items()" t-as="bobot_item">
+                                                <t t-set="bobot_key" t-value="bobot_item[0]"/>
+                                                <t t-set="total_avg" t-value="bobot_item[1]"/>
+                                                <t t-set="count" t-value="bobot_counts[bobot_key]"/>
+                                                <t t-set="final_avg" t-value="round(total_avg / count, 2)"/>
+                                                <t t-set="bobot_totals" t-value="dict(bobot_totals, **{bobot_key: final_avg})"/>
+</t>
+                                            <!-- Perhitungan Jumlah Baris: Menghitung jumlah baris per grup bobot untuk rowspan -->
+                                            <t t-set="bobot_row_counts" t-value="{}"/>
+                                            <!-- Variabel bobot_row_counts: Menyimpan jumlah baris per bobot -->
+                                            <t t-foreach="grouped_skills.items()" t-as="group">
+                                                <t t-set="skill_type_name" t-value="group[0]"/>
+                                                <!-- Variabel skill_type_name: Nama jenis keterampilan -->
+                                                <t t-set="skills_list" t-value="group[1]"/>
+                                                <!-- Variabel skills_list: Daftar keterampilan dalam jenis -->
+                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
+                                                <!-- Variabel bobot_key: Bobot keterampilan -->
                                                 <t t-if="bobot_key in bobot_row_counts">
                                                     <t t-set="bobot_row_counts" t-value="dict(bobot_row_counts, **{bobot_key: bobot_row_counts[bobot_key] + len(skills_list)})"/>
                                                 </t>
@@ -144,36 +179,52 @@
                                                 </t>
                                             </t>
                                             <!-- Inisialisasi Variabel Perhitungan: Untuk melacak bobot yang sudah diproses dan total akhir -->
-                                            <t t-set="processed_bobot_totals" t-value="{}"/> <!-- Variabel processed_bobot_totals: Melacak bobot yang sudah diproses untuk Kolom Total -->
-                                            <t t-set="processed_bobot_totals2" t-value="{}"/> <!-- Variabel processed_bobot_totals2: Melacak bobot yang sudah diproses untuk Kolom Total x Bobot -->
-                                            <t t-set="total3_sum" t-value="0"/> <!-- Variabel total3_sum: Jumlah total untuk Kolom Total 1 & 2 -->
-                                            <t t-set="total_rows" t-value="0"/> <!-- Variabel total_rows: Jumlah total baris untuk rowspan -->
+                                            <t t-set="processed_bobot_totals" t-value="{}"/>
+                                            <!-- Variabel processed_bobot_totals: Melacak bobot yang sudah diproses untuk Kolom Total -->
+                                            <t t-set="processed_bobot_totals2" t-value="{}"/>
+                                            <!-- Variabel processed_bobot_totals2: Melacak bobot yang sudah diproses untuk Kolom Total x Bobot -->
+                                            <t t-set="total3_sum" t-value="0"/>
+                                            <!-- Variabel total3_sum: Jumlah total untuk Kolom Total 1 & 2 -->
+                                            <t t-set="total_rows" t-value="0"/>
+                                            <!-- Variabel total_rows: Jumlah total baris untuk rowspan -->
                                             <!-- Menghitung Total Baris: Untuk rowspan Kolom Total 1 & 2 dan Kolom Skor -->
                                             <t t-foreach="grouped_skills.items()" t-as="group">
                                                 <t t-set="total_rows" t-value="total_rows + len(group[1])"/>
                                             </t>
                                             <!-- Perhitungan Total x Bobot: Menghitung total nilai dikalikan bobot -->
                                             <t t-foreach="bobot_totals.items()" t-as="bobot_total">
-                                                <t t-set="bobot_key" t-value="bobot_total[0]"/> <!-- Variabel bobot_key: Kunci bobot -->
-                                                <t t-set="total_value" t-value="bobot_total[1]"/> <!-- Variabel total_value: Nilai rata-rata per bobot -->
-                                                <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/> <!-- Variabel bobot_clean: Menghapus tanda % dari bobot -->
-                                                <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/> <!-- Variabel bobot_decimal: Konversi bobot ke desimal -->
+                                                <t t-set="bobot_key" t-value="bobot_total[0]"/>
+                                                <!-- Variabel bobot_key: Kunci bobot -->
+                                                <t t-set="total_value" t-value="bobot_total[1]"/>
+                                                <!-- Variabel total_value: Nilai rata-rata per bobot -->
+                                                <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/>
+                                                <!-- Variabel bobot_clean: Menghapus tanda % dari bobot -->
+                                                <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/>
+                                                <!-- Variabel bobot_decimal: Konversi bobot ke desimal -->
                                                 <!-- Kolom Total 1 & 2: Menjumlahkan total nilai setelah dikalikan bobot -->
                                                 <t t-set="total3_sum" t-value="total3_sum + (total_value * bobot_decimal)"/>
                                             </t>
                                             <!-- Pelacakan Bobot: Untuk menghindari duplikasi pada kolom yang menggunakan rowspan -->
-                                            <t t-set="processed_bobot_values" t-value="{}"/> <!-- Variabel processed_bobot_values: Melacak bobot yang sudah ditampilkan -->
-                                            <t t-set="skill_type_counter" t-value="1"/> <!-- Variabel skill_type_counter: Penghitung untuk Kolom Nomor -->
+                                            <t t-set="processed_bobot_values" t-value="{}"/>
+                                            <!-- Variabel processed_bobot_values: Melacak bobot yang sudah ditampilkan -->
+                                            <t t-set="skill_type_counter" t-value="1"/>
+                                            <!-- Variabel skill_type_counter: Penghitung untuk Kolom Nomor -->
                                             <!-- Iterasi Keterampilan: Menampilkan baris tabel untuk setiap grup keterampilan -->
                                             <t t-foreach="grouped_skills.items()" t-as="group">
-                                                <t t-set="skill_type_name" t-value="group[0]"/> <!-- Variabel skill_type_name: Nama jenis keterampilan -->
-                                                <t t-set="skills_list" t-value="group[1]"/> <!-- Variabel skills_list: Daftar keterampilan dalam grup -->
-                                                <t t-set="skill_count" t-value="len(skills_list)"/> <!-- Variabel skill_count: Jumlah keterampilan dalam grup -->
-                                                <t t-set="total_value" t-value="skill_totals[skill_type_name]"/> <!-- Variabel total_value: Total nilai untuk jenis keterampilan -->
+                                                <t t-set="skill_type_name" t-value="group[0]"/>
+                                                <!-- Variabel skill_type_name: Nama jenis keterampilan -->
+                                                <t t-set="skills_list" t-value="group[1]"/>
+                                                <!-- Variabel skills_list: Daftar keterampilan dalam grup -->
+                                                <t t-set="skill_count" t-value="len(skills_list)"/>
+                                                <!-- Variabel skill_count: Jumlah keterampilan dalam grup -->
+                                                <t t-set="total_value" t-value="skill_totals[skill_type_name]"/>
+                                                <!-- Variabel total_value: Total nilai untuk jenis keterampilan -->
                                                 <!-- Kolom Rata-Rata: Menghitung rata-rata nilai per jenis keterampilan -->
                                                 <t t-set="average_value" t-value="round(total_value / skill_count, 2)"/>
-                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/> <!-- Variabel bobot_key: Bobot keterampilan -->
-                                                <t t-set="total_value" t-value="bobot_totals[bobot_key]"/> <!-- Variabel total_value: Total nilai rata-rata per bobot -->
+                                                <t t-set="bobot_key" t-value="skills_list[0].bobot_penilaian_percentage"/>
+                                                <!-- Variabel bobot_key: Bobot keterampilan -->
+                                                <t t-set="total_value" t-value="bobot_totals[bobot_key]"/>
+                                                <!-- Variabel total_value: Total nilai rata-rata per bobot -->
                                                 <t t-foreach="skills_list" t-as="skill">
                                                     <tr>
                                                         <!-- Kolom Nomor: Menampilkan nomor urut jenis keterampilan dengan rowspan -->
@@ -224,9 +275,12 @@
                                                         </t>
                                                         <!-- Kolom Total x Bobot: Menampilkan total nilai dikalikan bobot dengan rowspan -->
                                                         <t t-if="bobot_key not in processed_bobot_totals2">
-                                                            <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/> <!-- Variabel bobot_clean: Menghapus tanda % -->
-                                                            <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/> <!-- Variabel bobot_decimal: Konversi bobot ke desimal -->
-                                                            <t t-set="total2_value" t-value="round(total_value * bobot_decimal, 2)"/> <!-- Variabel total2_value: Nilai total x bobot -->
+                                                            <t t-set="bobot_clean" t-value="bobot_key.replace('%', '')"/>
+                                                            <!-- Variabel bobot_clean: Menghapus tanda % -->
+                                                            <t t-set="bobot_decimal" t-value="int(bobot_clean) / 100.0"/>
+                                                            <!-- Variabel bobot_decimal: Konversi bobot ke desimal -->
+                                                            <t t-set="total2_value" t-value="round(total_value * bobot_decimal, 2)"/>
+                                                            <!-- Variabel total2_value: Nilai total x bobot -->
                                                             <td class="text-center align-middle" t-att-rowspan="bobot_row_counts[bobot_key]" style="font-size: 9px;">
                                                                 <t t-esc="total2_value"/>
                                                             </td>
@@ -268,22 +322,29 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <!-- Perhitungan Skor Akhir: Menyimpan total skor dan menentukan kategori -->
-                                <t t-set="final_total" t-value="round(total3_sum, 2)"/> <!-- Variabel final_total: Total skor akhir -->
-                                <t t-set="category" t-value="''"/> <!-- Variabel category: Kategori penilaian -->
+                                <t t-set="final_total" t-value="round(total3_sum, 2)"/>
+                                <!-- Variabel final_total: Total skor akhir -->
+                                <t t-set="category" t-value="''"/>
+                                <!-- Variabel category: Kategori penilaian -->
                                 <t t-if="final_total >= 4.21">
-                                    <t t-set="category">Sangat Baik</t> <!-- Kategori: Sangat Baik untuk skor >= 4.21 -->
+                                    <t t-set="category">Sangat Baik</t>
+                                    <!-- Kategori: Sangat Baik untuk skor >= 4.21 -->
                                 </t>
                                 <t t-elif="final_total >= 3.41">
-                                    <t t-set="category">Baik</t> <!-- Kategori: Baik untuk skor >= 3.41 -->
+                                    <t t-set="category">Baik</t>
+                                    <!-- Kategori: Baik untuk skor >= 3.41 -->
                                 </t>
                                 <t t-elif="final_total >= 2.61">
-                                    <t t-set="category">Cukup</t> <!-- Kategori: Cukup untuk skor >= 2.61 -->
+                                    <t t-set="category">Cukup</t>
+                                    <!-- Kategori: Cukup untuk skor >= 2.61 -->
                                 </t>
                                 <t t-elif="final_total >= 1.81">
-                                    <t t-set="category">Kurang</t> <!-- Kategori: Kurang untuk skor >= 1.81 -->
+                                    <t t-set="category">Kurang</t>
+                                    <!-- Kategori: Kurang untuk skor >= 1.81 -->
                                 </t>
                                 <t t-else="">
-                                    <t t-set="category">Kurang Sekali</t> <!-- Kategori: Kurang Sekali untuk skor di bawah 1.81 -->
+                                    <t t-set="category">Kurang Sekali</t>
+                                    <!-- Kategori: Kurang Sekali untuk skor di bawah 1.81 -->
                                 </t>
                                 <!-- Menampilkan Skor Akhir: Menampilkan kategori penilaian -->
                                 <strong style="font-size: 12px">Perhitungan Nilai Akhir :
