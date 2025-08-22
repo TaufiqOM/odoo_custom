@@ -274,7 +274,7 @@
                                 <br/>
                                 <br/>
                                 <br/>
-                                <p style="font-size: 11px; margin-top: 10px;">
+                                <p style="font-size: 11px; margin: 0; line-height: 1.2;">
                                     <strong>
                                         <t t-if="o.manager_ids">
                                             <t t-foreach="o.manager_ids" t-as="manager">
@@ -293,7 +293,7 @@
                                 <br/>
                                 <br/>
                                 <br/>
-                                <p style="font-size: 11px; margin-top: 30px;">
+                                <p style="font-size: 11px; margin: 0; line-height: 1.2;">
                                     <strong>Kholilah</strong>
                                 </p>
                             </div>
