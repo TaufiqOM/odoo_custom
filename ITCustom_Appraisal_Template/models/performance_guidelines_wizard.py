@@ -17,6 +17,10 @@ class PerformanceGuidelinesWizard(models.TransientModel):
         string="Pedoman Penilaian Kepemimpinan",
         compute="_compute_guidelines_html"
     )
+    performance_guidelines_skill_html = fields.Html(
+        string="Pedoman Penilaian Skill",
+        compute="_compute_skill_guidelines_html"
+    )
     
     @api.depends('appraisal_id')
     def _compute_guidelines_html(self):
@@ -157,6 +161,155 @@ class PerformanceGuidelinesWizard(models.TransientModel):
             </tbody>
         </table>
         """
+        return html_content
+    
+    @api.depends('appraisal_id')
+    def _compute_skill_guidelines_html(self):
+        """Compute HTML for skill guidelines grouped by skill type"""
+        for wizard in self:
+            if wizard.appraisal_id:
+                # Get all skills for this appraisal
+                appraisal_skills = self.env['hr.appraisal.skill'].search([
+                    ('appraisal_id', '=', wizard.appraisal_id.id)
+                ])
+                
+                # Group skills by skill type
+                skills_by_type = {}
+                for skill in appraisal_skills:
+                    skill_type_name = skill.skill_type_id.name or 'Lainnya'
+                    if skill_type_name not in skills_by_type:
+                        skills_by_type[skill_type_name] = []
+                    skills_by_type[skill_type_name].append(skill)
+                
+                # Generate HTML content
+                html_content = self._generate_skill_guidelines_html(skills_by_type)
+                wizard.performance_guidelines_skill_html = html_content
+            else:
+                wizard.performance_guidelines_skill_html = False
+    
+    def _generate_skill_guidelines_html(self, skills_by_type):
+        """Generate HTML for skills grouped by type"""
+        if not skills_by_type:
+            return "<div style='padding: 20px; text-align: center; color: #999;'>Tidak ada data skill yang tersedia.</div>"
+        
+        html_content = """
+        <style>
+            .skill-guidelines-container {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                margin: 20px;
+            }
+            .skill-type-header {
+                background-color: #007bff;
+                color: white;
+                padding: 12px 15px;
+                margin: 25px 0 15px 0;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .skill-list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0 0 30px 0;
+            }
+            .skill-item {
+                background-color: white;
+                border: 1px solid #e9ecef;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                padding: 15px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            .skill-item:hover {
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+            .skill-name {
+                font-weight: 600;
+                color: #212529;
+                font-size: 15px;
+                margin-bottom: 5px;
+            }
+            .skill-details {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-top: 8px;
+            }
+            .skill-level {
+                color: #6c757d;
+                font-size: 14px;
+                background-color: #f8f9fa;
+                padding: 4px 8px;
+                border-radius: 3px;
+                border: 1px solid #e9ecef;
+            }
+            .skill-justification {
+                color: #868e96;
+                font-style: italic;
+                font-size: 13px;
+                margin-top: 8px;
+                padding: 8px;
+                background-color: #f8f9fa;
+                border-radius: 3px;
+                border-left: 3px solid #007bff;
+            }
+            .no-skills {
+                color: #6c757d;
+                font-style: italic;
+                padding: 20px;
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 5px;
+                margin: 10px 0;
+            }
+            .main-header {
+                text-align: center;
+                color: #007bff;
+                margin-bottom: 30px;
+                font-size: 24px;
+                font-weight: 300;
+                padding-bottom: 15px;
+                border-bottom: 2px solid #e9ecef;
+            }
+        </style>
+        <div class="skill-guidelines-container">
+            <h2 class="main-header">Pedoman Penilaian Skill</h2>
+        """
+        
+        for skill_type_name, skills in skills_by_type.items():
+            html_content += f"""
+            <div class="skill-type-header">{skill_type_name}</div>
+            """
+            
+            if skills:
+                html_content += """
+                <ul class="skill-list">
+                """
+                
+                for skill in skills:
+                    skill_name = skill.skill_id.name or 'Skill Tidak Didefinisikan'
+                    skill_level = skill.skill_level_id.name or 'Level Tidak Didefinisikan'
+                    justification = skill.justification or ''
+                    
+                    html_content += f"""
+                    <li class="skill-item">
+                        <div class="skill-name">{skill_name}</div>
+                        <div class="skill-details">
+                            <span class="skill-level">Level: {skill_level}</span>
+                        </div>
+                        {f'<div class="skill-justification">Justifikasi: {justification}</div>' if justification else ''}
+                    </li>
+                    """
+                
+                html_content += """
+                </ul>
+                """
+            else:
+                html_content += """
+                <div class="no-skills">Tidak ada skill untuk kategori ini</div>
+                """
+        
+        html_content += "</div>"
         return html_content
     
     def action_close(self):

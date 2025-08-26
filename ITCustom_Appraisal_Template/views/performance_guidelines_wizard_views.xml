@@ -33,6 +33,13 @@
                                     <field name="performance_guidelines_kepemimpinan_html" widget="html" nolabel="1"/>
                                 </div>
                             </page>
+                            
+                            <!-- Tab for Lihat Pedoman Skill -->
+                            <page string="Lihat Pedoman" invisible="not performance_guidelines_skill_html">
+                                <div class="oe_readonly">
+                                    <field name="performance_guidelines_skill_html" widget="html" nolabel="1"/>
+                                </div>
+                            </page>
                         </notebook>
                         
                         <footer>
