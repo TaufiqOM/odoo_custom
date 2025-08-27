@@ -5,28 +5,30 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//app[@name='general_settings']" position="inside">
-                <block title="Trello Integration" name="trello_integration">
-                    <setting string="Enable Trello Integration" help="Aktifkan integrasi dengan Trello untuk sinkronisasi data">
-                        <field name="trello_enabled"/>
-                    </setting>
-                    
-                    <setting string="Sync Interval" help="Interval waktu untuk sinkronisasi otomatis dengan Trello">
-                        <field name="trello_sync_interval" invisible="not trello_enabled"/>
-                    </setting>
-                    
-                    <setting string="Trello API Key" help="Masukkan API Key dari Trello Developer Portal">
-                        <field name="trello_api_key" invisible="not trello_enabled"/>
-                    </setting>
-                    
-                    <setting string="Trello API Token" help="Masukkan API Token dari Trello Developer Portal">
-                        <field name="trello_api_token" invisible="not trello_enabled"/>
-                    </setting>
-                    
-                    <setting string="Trello Board ID" help="Masukkan ID Board Trello yang akan digunakan">
-                        <field name="trello_board_id" invisible="not trello_enabled"/>
-                    </setting>
-                </block>
+            <xpath expr="//form" position="inside">
+                <app data-string="Get Trello" string="Get Trello" name="get_trello" logo="/base/static/description/settings.png">
+                    <block title="Trello Integration Settings" name="trello_integration">
+                        <setting string="Enable Trello Integration" help="Aktifkan integrasi dengan Trello untuk sinkronisasi data">
+                            <field name="trello_enabled"/>
+                        </setting>
+                        
+                        <setting string="Sync Interval" help="Interval waktu untuk sinkronisasi otomatis dengan Trello">
+                            <field name="trello_sync_interval" invisible="not trello_enabled"/>
+                        </setting>
+                        
+                        <setting string="Trello API Key" help="Masukkan API Key dari Trello Developer Portal">
+                            <field name="trello_api_key" invisible="not trello_enabled"/>
+                        </setting>
+                        
+                        <setting string="Trello API Token" help="Masukkan API Token dari Trello Developer Portal">
+                            <field name="trello_api_token" invisible="not trello_enabled"/>
+                        </setting>
+                        
+                        <setting string="Trello Board ID" help="Masukkan ID Board Trello yang akan digunakan">
+                            <field name="trello_board_id" invisible="not trello_enabled"/>
+                        </setting>
+                    </block>
+                </app>
             </xpath>
         </field>
     </record>
