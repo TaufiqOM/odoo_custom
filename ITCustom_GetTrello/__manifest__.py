@@ -1,7 +1,7 @@
 {
     'name': 'Get Trello',
     'version': '1.0',
-    'depends': ['base', 'base_setup'],
+    'depends': ['base', 'base_setup', 'project'],
     'category': 'Tools',
     'summary': 'Integration with Trello API',
     'description': 'Module untuk mengintegrasikan Odoo dengan Trello API',
