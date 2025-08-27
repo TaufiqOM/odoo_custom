@@ -219,6 +219,7 @@ class ResConfigSettings(models.TransientModel):
         """Sync Trello data to Project module"""
         project_model = self.env['project.project']
         task_model = self.env['project.task']
+        stage_model = self.env['project.task.type']
         
         projects_count = 0
         tasks_count = 0
@@ -240,70 +241,83 @@ class ResConfigSettings(models.TransientModel):
         else:
             _logger.info("Found existing project: %s", board_name)
         
-        # Create sub-projects for each list
+        # Create stages for each list and map them to the project
+        stage_mapping = {}
         for trello_list in lists:
             list_name = trello_list.get('name', 'Unnamed List')
             list_id = trello_list.get('id')
             
-            # Create or update project for this list
-            project = project_model.search([
-                ('name', '=', list_name),
-                ('trello_list_id', '=', list_id)
+            # Create or update stage for this list
+            stage = stage_model.search([
+                ('name', '=', list_name)
             ], limit=1)
             
-            if not project:
-                project = project_model.create({
+            if not stage:
+                stage = stage_model.create({
                     'name': list_name,
-                    'trello_list_id': list_id,
-                    'description': f"Trello List: {list_name}\nList ID: {list_id}"
                 })
-                projects_count += 1
-                _logger.info("Created project for list: %s", list_name)
+                _logger.info("Created stage for list: %s", list_name)
+            
+            stage_mapping[list_id] = stage.id
+        
+        # Link stages to the project if they're not already linked
+        current_stage_ids = main_project.type_ids.ids
+        new_stage_ids = list(stage_mapping.values())
+        stages_to_add = list(set(new_stage_ids) - set(current_stage_ids))
+        
+        if stages_to_add:
+            main_project.write({
+                'type_ids': [(4, stage_id) for stage_id in stages_to_add]
+            })
+            _logger.info("Added %d stages to project", len(stages_to_add))
+        
+        # Create tasks for all cards and assign them to the correct stage
+        for card in cards:
+            card_name = card.get('name', 'Unnamed Card')
+            card_id = card.get('id')
+            card_desc = card.get('desc', '')
+            card_due = card.get('due')
+            card_url = card.get('url')
+            list_id = card.get('idList')
+            
+            # Get the corresponding stage for this card's list
+            stage_id = stage_mapping.get(list_id)
+            
+            # Create or update task
+            task = task_model.search([
+                ('name', '=', card_name),
+                ('trello_card_id', '=', card_id),
+                ('project_id', '=', main_project.id)
+            ], limit=1)
+            
+            task_vals = {
+                'name': card_name,
+                'description': f"{card_desc}\n\nTrello Card URL: {card_url}" if card_url else card_desc,
+                'trello_card_id': card_id,
+                'project_id': main_project.id,
+            }
+            
+            if stage_id:
+                task_vals['stage_id'] = stage_id
+            
+            if card_due:
+                # Convert Trello date format (ISO 8601 with Zulu time) to Odoo format
+                try:
+                    from datetime import datetime
+                    # Parse the ISO format date and convert to Odoo format
+                    due_date = datetime.fromisoformat(card_due.replace('Z', '+00:00'))
+                    task_vals['date_deadline'] = due_date.strftime('%Y-%m-%d %H:%M:%S')
+                except (ValueError, TypeError):
+                    _logger.warning("Invalid date format for card %s: %s", card_name, card_due)
+            
+            if not task:
+                task_model.create(task_vals)
+                tasks_count += 1
+                _logger.info("Created task: %s in stage %s", card_name, stage_mapping.get(list_id, 'Unknown'))
             else:
-                _logger.info("Found existing project for list: %s", list_name)
-            
-            # Create tasks for cards in this list
-            list_cards = [card for card in cards if card.get('idList') == list_id]
-            
-            for card in list_cards:
-                card_name = card.get('name', 'Unnamed Card')
-                card_id = card.get('id')
-                card_desc = card.get('desc', '')
-                card_due = card.get('due')
-                card_url = card.get('url')
-                
-                # Create or update task
-                task = task_model.search([
-                    ('name', '=', card_name),
-                    ('trello_card_id', '=', card_id),
-                    ('project_id', '=', project.id)
-                ], limit=1)
-                
-                task_vals = {
-                    'name': card_name,
-                    'description': f"{card_desc}\n\nTrello Card URL: {card_url}" if card_url else card_desc,
-                    'trello_card_id': card_id,
-                    'project_id': project.id,
-                }
-                
-                if card_due:
-                    # Convert Trello date format (ISO 8601 with Zulu time) to Odoo format
-                    try:
-                        from datetime import datetime
-                        # Parse the ISO format date and convert to Odoo format
-                        due_date = datetime.fromisoformat(card_due.replace('Z', '+00:00'))
-                        task_vals['date_deadline'] = due_date.strftime('%Y-%m-%d %H:%M:%S')
-                    except (ValueError, TypeError):
-                        _logger.warning("Invalid date format for card %s: %s", card_name, card_due)
-                
-                if not task:
-                    task_model.create(task_vals)
-                    tasks_count += 1
-                    _logger.info("Created task: %s", card_name)
-                else:
-                    task.write(task_vals)
-                    tasks_count += 1
-                    _logger.info("Updated task: %s", card_name)
+                task.write(task_vals)
+                tasks_count += 1
+                _logger.info("Updated task: %s", card_name)
         
         return {
             'projects_count': projects_count,
