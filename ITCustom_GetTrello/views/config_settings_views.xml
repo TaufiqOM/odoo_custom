@@ -27,6 +27,16 @@
                         <setting string="Trello Board ID" help="Masukkan ID Board Trello yang akan digunakan">
                             <field name="trello_board_id" invisible="not trello_enabled"/>
                         </setting>
+                        
+                        <div class="oe_inline" invisible="not trello_enabled">
+                            <button 
+                                name="action_test_trello_connection" 
+                                string="Test Connection" 
+                                type="object" 
+                                class="btn-primary"
+                                icon="fa-refresh"
+                            />
+                        </div>
                     </block>
                 </app>
             </xpath>
