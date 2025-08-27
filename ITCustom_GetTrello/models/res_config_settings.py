@@ -197,12 +197,13 @@ class ResConfigSettings(models.TransientModel):
             return []
 
     def _fetch_trello_cards(self):
-        """Fetch all cards from Trello board"""
+        """Fetch all cards from Trello board with attachments"""
         try:
             url = f"https://api.trello.com/1/boards/{self.trello_board_id}/cards"
             params = {
                 'key': self.trello_api_key,
-                'token': self.trello_api_token
+                'token': self.trello_api_token,
+                'attachments': 'true'  # Include attachments in the response
             }
             
             response = requests.get(url, params=params, timeout=30)
@@ -214,6 +215,48 @@ class ResConfigSettings(models.TransientModel):
         except Exception as e:
             _logger.error("Error fetching cards: %s", str(e))
             return []
+
+    def _fetch_trello_attachments(self, card_id):
+        """Fetch attachments for a specific Trello card"""
+        try:
+            url = f"https://api.trello.com/1/cards/{card_id}/attachments"
+            params = {
+                'key': self.trello_api_key,
+                'token': self.trello_api_token
+            }
+            
+            response = requests.get(url, params=params, timeout=30)
+            if response.status_code == 200:
+                return response.json()
+            else:
+                _logger.error("Failed to fetch attachments for card %s: %s", card_id, response.text)
+                return []
+        except Exception as e:
+            _logger.error("Error fetching attachments for card %s: %s", card_id, str(e))
+            return []
+
+    def _download_and_attach_file(self, task, attachment_url, filename):
+        """Download file from URL and attach it to the task"""
+        try:
+            # Download the file
+            response = requests.get(attachment_url, timeout=30)
+            if response.status_code == 200:
+                # Create attachment
+                attachment = self.env['ir.attachment'].create({
+                    'name': filename,
+                    'datas': response.content.encode('base64'),
+                    'res_model': 'project.task',
+                    'res_id': task.id,
+                    'type': 'binary',
+                })
+                _logger.info("Attached file %s to task %s", filename, task.name)
+                return attachment
+            else:
+                _logger.error("Failed to download file %s: %s", attachment_url, response.text)
+                return None
+        except Exception as e:
+            _logger.error("Error downloading file %s: %s", attachment_url, str(e))
+            return None
 
     def _sync_to_project(self, board_name, lists, cards):
         """Sync Trello data to Project module"""
@@ -292,7 +335,7 @@ class ResConfigSettings(models.TransientModel):
             
             task_vals = {
                 'name': card_name,
-                'description': f"{card_desc}\n\nTrello Card URL: {card_url}" if card_url else card_desc,
+                'description': card_desc or '',
                 'trello_card_id': card_id,
                 'project_id': main_project.id,
             }
@@ -311,13 +354,21 @@ class ResConfigSettings(models.TransientModel):
                     _logger.warning("Invalid date format for card %s: %s", card_name, card_due)
             
             if not task:
-                task_model.create(task_vals)
+                task = task_model.create(task_vals)
                 tasks_count += 1
                 _logger.info("Created task: %s in stage %s", card_name, stage_mapping.get(list_id, 'Unknown'))
             else:
                 task.write(task_vals)
                 tasks_count += 1
                 _logger.info("Updated task: %s", card_name)
+            
+            # Process attachments for this card
+            if 'attachments' in card and card['attachments']:
+                for attachment in card['attachments']:
+                    if attachment.get('isUpload'):
+                        attachment_url = attachment.get('url')
+                        filename = attachment.get('name', f'attachment_{attachment["id"]}')
+                        self._download_and_attach_file(task, attachment_url, filename)
         
         return {
             'projects_count': projects_count,
