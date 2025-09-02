@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="portal_my_projects_inherit" name="Inherit My Projects" inherit_id="project.portal_my_projects">
+        <!-- Replace table with card layout -->
+        <xpath expr="//t[@t-call='portal.portal_table']" position="replace">
+            <div class="row project-cards-container">
+                <t t-foreach="projects" t-as="project">
+                    <div class="col-md-4 col-sm-6 mb-3">
+                    <div class="card project-card h-100" t-attf-onclick="window.location.href='/my/projects/#{project.id}'" style="cursor:pointer;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <span class="project-link card-link">
+                                    <span t-field="project.name"/>
+                                </span>
+                            </h5>
+                            <p class="card-text mt-auto">
+                                <span class="badge bg-primary task-count">
+                                    <t t-out="project.task_count"/> <t t-out="project.label_tasks"/>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

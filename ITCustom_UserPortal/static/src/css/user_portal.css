@@ -1,0 +1,72 @@
+/* Custom styles for User Portal Projects Page - Card Layout */
+
+.project-cards-container {
+    padding: 20px 0;
+}
+
+.project-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.project-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+.project-link:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.card-title {
+    margin-bottom: 15px;
+}
+
+.task-count {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Additional enhancements */
+.o_portal_searchbar {
+    margin-bottom: 20px;
+}
+
+.alert-warning {
+    border-radius: 8px;
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-cards-container {
+        padding: 10px 0;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .project-link {
+        font-size: 1.1em;
+    }
+}
