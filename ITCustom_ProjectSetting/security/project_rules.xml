@@ -1,0 +1,15 @@
+<odoo>
+    <!-- Rule untuk membatasi project dengan privacy_visibility = invited_only -->
+    <record id="project_invited_only_rule" model="ir.rule">
+        <field name="name">Project invited only visibility</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="groups" eval="[]"/> <!-- kosong artinya berlaku global -->
+        <field name="domain_force">
+            [
+                '|',
+                ('privacy_visibility', '!=', 'invited_only'),
+                ('message_follower_ids.partner_id', 'in', [user.partner_id.id])
+            ]
+        </field>
+    </record>
+</odoo>

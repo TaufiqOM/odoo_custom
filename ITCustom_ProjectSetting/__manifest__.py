@@ -6,7 +6,10 @@
     'description': 'This module adds a new privacy visibility option "Invited Only" to the project model.',
     'author': 'Your Name',
     'depends': ['project'],
-    'data': [],
+    'data': [
+            'security/ir.model.access.csv',
+            'security/project_rules.xml',
+            ],
     'installable': True,
     'application': False,
 }
