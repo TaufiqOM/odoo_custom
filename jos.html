@@ -8,6 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
+    <!-- Print page size for A6 -->
+    <style type="text/css" media="print">
+        @page {
+            size: A6;
+            margin: 0;
+        }
+    </style>
+
     <style>
         body {
             background: #eee;
@@ -22,13 +30,14 @@
             /* A6 width */
             height: 148mm;
             /* A6 height */
-            margin: 10px auto;
-            padding: 5mm;
+            margin: 0;
+            padding: 4mm;
             box-sizing: border-box;
             position: relative;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            page-break-inside: avoid;
         }
 
         .page-break {
@@ -88,16 +97,51 @@
 
         @media print {
             body {
-                background: none;
+                background: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
             .page {
-                margin: 0;
-                box-shadow: none;
+                margin: 0 !important;
+                box-shadow: none !important;
+                width: 105mm !important;
+                height: 148mm !important;
+                padding: 4mm !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
             }
 
             .print-btn {
-                display: none;
+                display: none !important;
+            }
+
+            /* Ensure all text is visible and properly sized for print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            /* Optimize QR codes for print */
+            .qr canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            /* Ensure images maintain aspect ratio in print */
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            /* Optimize table borders for print */
+            .table-bordered {
+                border: 1px solid #000 !important;
+            }
+
+            .table-bordered td,
+            .table-bordered th {
+                border: 1px solid #000 !important;
             }
         }
 
@@ -139,17 +183,17 @@
 
         /* Perbaikan untuk header */
         .header-table {
-            height: 35px !important;
-            max-height: 35px !important;
+            height: 32px !important;
+            max-height: 32px !important;
             table-layout: fixed;
             width: 100%;
-            margin-bottom: 2px !important;
+            margin-bottom: 1px !important;
         }
 
         .header-table td {
-            height: 35px !important;
-            max-height: 35px !important;
-            padding: 1px 3px !important;
+            height: 32px !important;
+            max-height: 32px !important;
+            padding: 1px 2px !important;
             vertical-align: middle !important;
             overflow: hidden;
         }
@@ -209,8 +253,9 @@
             flex-direction: column;
             justify-content: flex-start;
             /* Diubah dari space-between */
-            gap: 2px;
-            /* Kontrol jarak antar elemen */
+            gap: 1px;
+            /* Kontrol jarak antar elemen untuk A6 */
+            height: 100%;
         }
 
         /* Penyesuaian untuk tabel dengan konten panjang */
@@ -369,31 +414,31 @@
             { order: "TDP250901WOODVILLE-OMD", item: "166024-0001-0002" },
         ];
 
-        // Generate QR Codes with smaller size
+        // Generate QR Codes optimized for A6 print
         qrData.forEach((data, idx) => {
             new QRCode(document.getElementById(`qr-order-${idx + 1}`), {
                 text: data.order,
-                width: 35,
-                height: 35,
+                width: 40,
+                height: 40,
                 colorDark: "#000000",
                 colorLight: "#FFFFFF",
-                correctLevel: QRCode.CorrectLevel.L
+                correctLevel: QRCode.CorrectLevel.H
             });
             new QRCode(document.getElementById(`qr-item-left-${idx + 1}`), {
                 text: data.item,
-                width: 55,
-                height: 55,
+                width: 60,
+                height: 60,
                 colorDark: "#000000",
                 colorLight: "#FFFFFF",
-                correctLevel: QRCode.CorrectLevel.L
+                correctLevel: QRCode.CorrectLevel.H
             });
             new QRCode(document.getElementById(`qr-item-right-${idx + 1}`), {
                 text: data.item,
-                width: 55,
-                height: 55,
+                width: 60,
+                height: 60,
                 colorDark: "#000000",
                 colorLight: "#FFFFFF",
-                correctLevel: QRCode.CorrectLevel.L
+                correctLevel: QRCode.CorrectLevel.H
             });
         });
     </script>
