@@ -37,15 +37,15 @@
         }
 
         img.logo {
-            max-width: 60px;
-            max-height: 60px;
+            height: 100%;
+            max-height: 40px; /* Tambahkan ini untuk membatasi tinggi logo */
+            object-fit: contain;
         }
 
         .qr {
-            padding: 10px;
+            padding: 5px;
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: auto;
         }
 
@@ -53,6 +53,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .qr-item-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .info {
@@ -99,6 +106,10 @@
             font-size: 16px;
         }
 
+        .fs-xlarge {
+            font-size: 22px;
+        }
+
         .table-bordered td, .table-bordered th {
             border-color: #333 !important;
         }
@@ -106,6 +117,27 @@
         h6 {
             font-size: 14px;
             margin: 10px 0;
+        }
+
+        .fs-product-name {
+            font-size: 12px;
+        }
+        
+        /* Tambahan untuk membatasi tinggi tabel header */
+        .header-table {
+            height: 40px !important;
+            max-height: 40px !important;
+        }
+        
+        .header-table td {
+            height: 40px !important;
+            max-height: 40px !important;
+            padding: 2px 5px !important;
+            vertical-align: middle !important;
+        }
+        
+        .header-table .fs-xlarge {
+            line-height: 1 !important;
         }
     </style>
 </head>
@@ -115,13 +147,13 @@
     <!-- Card Produk 1 -->
     <div class="page page-break">
         <!-- Header -->
-        <table class="table table-bordered border-dark mb-2">
+        <table class="table table-bordered border-dark mb-2 header-table" style="width: 100%;">
             <tr class="align-middle">
-                <td class="text-center" style="width: 70px;">
+                <td class="text-center" style="width: 25%; padding: 0;">
                     <img src="http://192.168.0.5/omega/gambar/logo_c2.jpg" class="logo" alt="Logo">
                 </td>
-                <td class="fw-bold fs-large text-center">23352</td>
-                <td class="text-center fw-bold fs-large">Sep25</td>
+                <td class="fw-bold fs-large fs-xlarge text-center" style="width: 50%;">23352</td>
+                <td class="text-center fw-bold fs-large" style="width: 25%;">Sep25</td>
             </tr>
         </table>
 
@@ -138,7 +170,7 @@
         </table>
 
         <!-- Nama Produk -->
-        <h6 class="fw-bold">Nanuku CA-104 Side Table</h6>
+        <h6 class="fw-bold fs-product-name">Mirror Resin Stone Wall Art - Finish Cheese Stone</h6>
 
         <!-- Detail Produk -->
         <table class="table table-sm border-white align-middle mb-2">
@@ -151,9 +183,6 @@
             </tr>
             <tr>
                 <td colspan="2" class="fs-medium">BLACK BEAN.SP</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="fs-medium">TDP250901WOODVILLE-OMD</td>
             </tr>
             <tr>
                 <td colspan="2" class="fs-large text-decoration-underline"><b>TDP/NZ</b></td>
@@ -186,11 +215,11 @@
         <!-- QR Item -->
         <table class="table border-white mb-0">
             <tr>
-                <td class="text-center fs-small">QR Item<br>
+                <td class="text-center fs-small qr-item-cell">QR Item<br>
                     <div id="qr-item-left-1" class="qr"></div>
                 </td>
                 <td class="text-center fs-medium">No Item<br><b class="fs-large">166024-0001-0002</b><br>22 September 2025</td>
-                <td class="text-center fs-small">QR Item<br>
+                <td class="text-center fs-small qr-item-cell">QR Item<br>
                     <div id="qr-item-right-1" class="qr"></div>
                 </td>
             </tr>
