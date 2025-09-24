@@ -344,8 +344,13 @@
                         <div style="margin-bottom: 5px; display: flex; justify-content: center; align-items: center;">QR Item</div>
                         <div id="qr-item-left-1" class="qr"></div>
                     </td>
-                    <td class="text-center fs-medium" style="width: 50%; text-align: center; vertical-align: top; border: solid 1px;" rowspan="2">No Item<br><b
-                            class="fs-large">166024-0001-0002</b><br>22 September 2025</td>
+                    <td class="text-center fs-medium" style="width: 50%; text-align: center; vertical-align: top;" rowspan="2">
+                        <table style="width: 100%; height: 100%;">
+                            <tr><td class="fs-medium">No Item</td></tr>
+                            <tr><td style="font-size: 18px;"><b>166024-0001-0002</b></td></tr>
+                            <tr><td class="fs-medium">22 September 2025</td></tr>
+                        </table>
+                    </td>
                     <td class="text-center fs-small qr-item-cell" style="width: 100%; text-align: center; vertical-align: top;">
                         <div style="margin-bottom: 5px; display: flex; justify-content: center; align-items: center;">QR Item</div>
                         <div id="qr-item-right-1" class="qr"></div>
@@ -376,16 +381,16 @@
             });
             new QRCode(document.getElementById(`qr-item-left-${idx + 1}`), {
                 text: data.item,
-                width: 45,
-                height: 45,
+                width: 55,
+                height: 55,
                 colorDark: "#000000",
                 colorLight: "#FFFFFF",
                 correctLevel: QRCode.CorrectLevel.L
             });
             new QRCode(document.getElementById(`qr-item-right-${idx + 1}`), {
                 text: data.item,
-                width: 45,
-                height: 45,
+                width: 55,
+                height: 55,
                 colorDark: "#000000",
                 colorLight: "#FFFFFF",
                 correctLevel: QRCode.CorrectLevel.L
